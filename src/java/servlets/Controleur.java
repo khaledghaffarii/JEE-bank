@@ -7,6 +7,8 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,23 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 public class Controleur extends HttpServlet {
     
     // Tableau tab;// un javabean
-    Connection connexion;
 //    Session bddSession;
+//    Compte compte;
     String erreur;
     public void init(){
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        }
-        catch(ClassNotFoundException e){
-            erreur="Erreur lors du chargement du driver"+ e;
-        }
-        String serveur= "//localhost";
-        String dbName = "sample";//sample
-        int port = 1527;
-        String derbyURL = "jdbc:derby:" + serveur + ":" + port +"/"+ dbName;
-        String user = "app";
-        String pass = "app";
 //        this.bddSession = Hibernate.instance().getSession();
+//        this.compte = null;
     }
 
     /**
@@ -79,7 +70,8 @@ public class Controleur extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         switch(request.getParameter("Operation")){
-            case "Afficher tous les enregistrements" :
+            case "Se connecter" :
+                connecter(request, response);
             break;
             case "inserer un enregistrement" :
             break;
@@ -97,5 +89,31 @@ public class Controleur extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void connecter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        
+        //TODO Recherche du compte
+        
+//      if (this.compte == null)
+        if (false) {
+            request.setAttribute("erreur", "L'authentification a échoué.");
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+        }
+//      else if (this.compte instanceof Client)
+        else if (true)
+            accueilClient(request, response);
+//      else if (this.compte instanceof Conseiller)
+        else if (false)
+            accueilConseiller(request, response);
+    }
+
+    private void accueilClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("client.jsp").forward(request,response);
+    }
+    private void accueilConseiller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("conseiller.jsp").forward(request,response);
+    }
 
 }
