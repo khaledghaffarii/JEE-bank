@@ -55,7 +55,20 @@ public class Controleur extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
+        switch(request.getParameter("Operation")){
+            case "Afficher les dernières opérations" :
+                dernieresOperations(request, response);
+            break;
+            case "Effectuer un virement" :
+                pageVirement(request, response);
+            break;
+            case "Obtenir un RIB" :
+                rib(request, response);
+            break;
+            default:
+                response.sendRedirect("login.jsp");
+            break;
+        }
     }
 
     /**
@@ -110,10 +123,20 @@ public class Controleur extends HttpServlet {
     }
 
     private void accueilClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("client.jsp").forward(request,response);
+        request.getRequestDispatcher("accueilClient.jsp").forward(request,response);
     }
     private void accueilConseiller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("conseiller.jsp").forward(request,response);
+        request.getRequestDispatcher("accueilConseiller.jsp").forward(request,response);
+    }
+
+    private void dernieresOperations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("dernieresOperations.jsp").forward(request,response);
+    }
+    private void pageVirement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("pageVirement.jsp").forward(request,response);
+    }
+    private void rib(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("rib.jsp").forward(request,response);
     }
 
 }
