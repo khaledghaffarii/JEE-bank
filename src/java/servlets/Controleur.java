@@ -5,8 +5,7 @@
  */
 package servlets;
 
-import beans.BeanClient;
-import beans.BeanRib;
+import beans.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -196,33 +195,42 @@ public class Controleur extends HttpServlet {
             accueilConseiller(request, response);
     }
 
-    private void accueilClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void accueilClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         if (!(this.utilisateur instanceof Client))
             return; //TODO error.jsp
         BeanClient beanClient = new BeanClient((Client) this.utilisateur);
         request.setAttribute("client", beanClient);
         request.getRequestDispatcher("accueilClient.jsp").forward(request,response);
     }
-    private void accueilConseiller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void accueilConseiller(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         request.getRequestDispatcher("accueilConseiller.jsp").forward(request,response);
     }
 
-    private void dernieresOperations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void dernieresOperations(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
-            return; //TODO error.jsp
+        if (iban == null || "".equals(iban))
+            erreurClient(request, response, "Il faut un IBAN pour consulter un compte.");
+        //TODO : vérifier que l'iban fait partie des comptes de l'utilisateur, ou renvoyer sur erreur (sécurité).
         request.getRequestDispatcher("dernieresOperations.jsp").forward(request,response);
     }
-    private void pageVirement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void pageVirement(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
-            return; //TODO error.jsp
+            erreurClient(request, response, "Il faut un IBAN pour initier un virement.");
+        //TODO : vérifier que l'iban fait partie des comptes de l'utilisateur, ou renvoyer sur erreur (sécurité).
         request.getRequestDispatcher("pageVirement.jsp").forward(request,response);
     }
-    private void rib(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void rib(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
-            return; //TODO error.jsp
+            erreurClient(request, response, "Il faut un IBAN pour éditer un RIB.");
+        //TODO : vérifier que l'iban fait partie des comptes de l'utilisateur, ou renvoyer sur erreur (sécurité).
         
         Client client = (Client) this.utilisateur;
         BeanRib beanRib = new BeanRib();
@@ -234,6 +242,12 @@ public class Controleur extends HttpServlet {
         beanRib.setIban(iban);
         request.setAttribute("rib", beanRib);
         request.getRequestDispatcher("rib.jsp").forward(request,response);
+    }
+    private void erreurClient(HttpServletRequest request, HttpServletResponse response, String message)
+            throws ServletException, IOException {
+        BeanErreur beanErreur = new BeanErreur(message, "Accueil Client");
+        request.setAttribute("erreur", beanErreur);
+        request.getRequestDispatcher("erreur.jsp").forward(request,response);
     }
 
 }
