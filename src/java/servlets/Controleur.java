@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import beans.BeanCompte;
+import beans.BeanRib;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
@@ -55,8 +57,14 @@ public class Controleur extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request == null || request.getParameter("Operation") == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        System.out.println(request.getParameter("Operation"));
+        
         switch(request.getParameter("Operation")){
-            case "Afficher les dernières opérations" :
+            case "Dernieres operations" :
                 dernieresOperations(request, response);
             break;
             case "Effectuer un virement" :
@@ -64,6 +72,9 @@ public class Controleur extends HttpServlet {
             break;
             case "Obtenir un RIB" :
                 rib(request, response);
+            break;
+            case "Accueil Client" :
+                accueilClient(request, response);
             break;
             default:
                 response.sendRedirect("login.jsp");
@@ -136,6 +147,16 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("pageVirement.jsp").forward(request,response);
     }
     private void rib(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BeanRib beanRib = new BeanRib();
+        //TODO : set rib
+        beanRib.setPrenom("Joseph");
+        beanRib.setNom("Tartampion");
+        beanRib.setAdresseClient("3, allée des Lilas, Lyonbanne 69. Juste 69.");
+        beanRib.setNomAgence("Pognon");
+        beanRib.setAdresseAgence("10, rue des fouilles, Paris 12345");
+        beanRib.setIban("21376D D DSHFUJE KSJF ZY DJQSD H3UH ZKJFSK43");
+        //TODO : end
+        request.setAttribute("rib", beanRib);
         request.getRequestDispatcher("rib.jsp").forward(request,response);
     }
 

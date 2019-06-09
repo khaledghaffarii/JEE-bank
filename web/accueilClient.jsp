@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Accueil</title>
     </head>
     <body>
         <h1>Crédit Gratuit</h1>
@@ -19,7 +19,8 @@
             <h3>IBAN</h3>
             <p>Solde : </p>
             <form action="Controleur" method="Get">
-                <input type="submit" name="Operation" value="Afficher les dernières opérations">
+                <input type="hidden" name="Operation" value="Dernieres operations">
+                <input type="submit" value="Afficher les dernières opérations">
             </form>
             <form action="Controleur" method="Get">
                 <input type="submit" name="Operation" value="Effectuer un virement">
