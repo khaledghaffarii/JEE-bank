@@ -5,42 +5,50 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" 
+       uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+    <jsp:useBean id="client" class="beans.BeanClient" scope="request" />
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Accueil</title>
     </head>
     <body>
         <h1>Crédit Gratuit</h1>
-        <p>Bienvenue NOM PRENOM</p>
+        <p>Bienvenue ${client.client.nom} ${client.client.prenom}</p>
         <h2>Mes comptes</h2>
-        <div class="compte">
-            <h3>IBAN</h3>
-            <p>Solde : </p>
-            <form action="Controleur" method="Get">
-                <input type="hidden" name="Operation" value="Dernieres operations">
-                <input type="submit" value="Afficher les dernières opérations">
-            </form>
-            <form action="Controleur" method="Get">
-                <input type="submit" name="Operation" value="Effectuer un virement">
-            </form>
-            <form action="Controleur" method="Get">
-                <input type="submit" name="Operation" value="Obtenir un RIB">
-            </form>
-        </div>
+        <c:forEach items="${client.client.clientComptes}" var="clientCompte">
+            <div class="compte">
+                <h3>IBAN : ${clientCompte.compte.iban}</h3>
+                <p>Solde : ${clientCompte.compte.solde} €</p>
+                <form action="Controleur" method="Get">
+                    <input type="hidden" name="Operation" value="Dernieres operations">
+                    <input type="hidden" name="Iban" value="${clientCompte.compte.iban}">
+                    <input type="submit" value="Afficher les dernières opérations">
+                </form>
+                <form action="Controleur" method="Get">
+                    <input type="hidden" name="Iban" value="${clientCompte.compte.iban}">
+                    <input type="submit" name="Operation" value="Effectuer un virement">
+                </form>
+                <form action="Controleur" method="Get">
+                    <input type="hidden" name="Iban" value="${clientCompte.compte.iban}">
+                    <input type="submit" name="Operation" value="Obtenir un RIB">
+                </form>
+            </div>
+        </c:forEach>
         <h2>Mon agence</h2>
         <div>
             <h3>Adresse</h3>
-            <p>ADRESSE</p>
+            <p>${client.client.agence.adresse}</p>
             <h3>Téléphone</h3>
-            <p>PHONE</p>
+            <p>${client.client.agence.telephone}</p>
             <h3>Horaires</h3>
-            <p>HORAIRES</p>
+            <p>${client.client.agence.horaires}</p>
         </div>
         <h2>Contacter mon conseiller</h2>
         <div class="contact">
-            <p>Votre conseiller est NOM PRENOM.</p>
+            <p>Votre conseiller est ${client.client.conseiller.nom} ${client.client.conseiller.prenom}.</p>
             <form action="Controleur" method="Post">
                 <textarea name="message"></textarea>
                 <input type="submit" name="Operation" value="Envoyer un message"/>

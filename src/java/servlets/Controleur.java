@@ -5,16 +5,15 @@
  */
 package servlets;
 
-import beans.BeanCompte;
+import beans.BeanClient;
 import beans.BeanRib;
 import java.io.IOException;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import tests.*;
 
 /**
  *
@@ -24,11 +23,10 @@ public class Controleur extends HttpServlet {
     
     // Tableau tab;// un javabean
 //    Session bddSession;
-//    Compte compte;
-    String erreur;
+    Utilisateur utilisateur;
     public void init(){
 //        this.bddSession = Hibernate.instance().getSession();
-//        this.compte = null;
+        this.utilisateur = null;
     }
 
     /**
@@ -120,20 +118,89 @@ public class Controleur extends HttpServlet {
         
         //TODO Recherche du compte
         
-//      if (this.compte == null)
-        if (false) {
+        //test
+        this.utilisateur = new Client();
+        this.utilisateur.setLogin("loginne");
+        this.utilisateur.setNom("Martin-Tartampion");
+        this.utilisateur.setPrenom("Martine");
+        this.utilisateur.setIdUtilisateur(43);
+        this.utilisateur.setTelephone("0606060606");
+        //Conseiller
+        Conseiller conseiller = new Conseiller();
+        conseiller.setLogin("loginne");
+        conseiller.setNom("Goldman");
+        conseiller.setPrenom("Jean-Jacques");
+        conseiller.setIdUtilisateur(9000);
+        conseiller.setTelephone("0987654321");
+        ((Client) this.utilisateur).setConseiller(conseiller);
+        ((Client) this.utilisateur).setIdConseiller(conseiller.getIdConseiller());
+        // Agence
+        Agence agence = new Agence();
+        agence.setAdresse("Derrière toi");
+        agence.setHoraires("Lundi : 8h-9h\nMardi:5h-9h33\nFermé le reste de la semaine");
+        agence.setIdAgence(7);
+        agence.setTelephone("1234567890");
+        ((Client) this.utilisateur).setIdAgence(this.utilisateur.getIdUtilisateur());
+        ((Client) this.utilisateur).setAgence(agence);
+        // Comptes
+        // 1
+        Compte c1 = new Compte();
+        c1.setIban("FR76 EZR8 GFD90 345R");
+        c1.setSolde(12345.67);
+        ClientCompte c1client = new ClientCompte();
+        c1client.setIdClient(this.utilisateur.getIdUtilisateur());
+        c1client.setClient((Client) this.utilisateur);
+        c1client.setIban(c1.getIban());
+        c1client.setCompte(c1);
+        ArrayList<ClientCompte> cc1 = new ArrayList<ClientCompte>();
+        cc1.add(c1client);
+        c1.setClientComptes(cc1);
+        // 2
+        Compte c2 = new Compte();
+        c2.setIban("FR76 65KJ OKE0 0EJD");
+        c2.setSolde(-43.43);
+        ClientCompte c2client = new ClientCompte();
+        c2client.setIdClient(this.utilisateur.getIdUtilisateur());
+        c2client.setClient((Client) this.utilisateur);
+        c2client.setIban(c2.getIban());
+        c2client.setCompte(c2);
+        ArrayList<ClientCompte> cc2 = new ArrayList<ClientCompte>();
+        cc2.add(c2client);
+        c2.setClientComptes(cc2);
+        // 3
+        Compte c3 = new Compte();
+        c3.setIban("FR76 HHKI 89RN F032");
+        c3.setSolde(-58.30);
+        ClientCompte c3client = new ClientCompte();
+        c3client.setIdClient(this.utilisateur.getIdUtilisateur());
+        c3client.setClient((Client) this.utilisateur);
+        c3client.setIban(c3.getIban());
+        c3client.setCompte(c3);
+        ArrayList<ClientCompte> cc3 = new ArrayList<ClientCompte>();
+        cc3.add(c3client);
+        c3.setClientComptes(cc3);
+        // Making it so that the client knows their accounts
+        ArrayList<ClientCompte> cc = new ArrayList<ClientCompte>();
+        cc.add(c1client);
+        cc.add(c2client);
+        cc.add(c3client);
+        ((Client) this.utilisateur).setClientComptes(cc);
+        
+      if (this.utilisateur == null) {
             request.setAttribute("erreur", "L'authentification a échoué.");
             request.getRequestDispatcher("login.jsp").forward(request,response);
         }
-//      else if (this.compte instanceof Client)
-        else if (true)
+      else if (this.utilisateur instanceof Client)
             accueilClient(request, response);
-//      else if (this.compte instanceof Conseiller)
-        else if (false)
+      else if (this.utilisateur instanceof Conseiller)
             accueilConseiller(request, response);
     }
 
     private void accueilClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!(this.utilisateur instanceof Client))
+            return; //TODO error.jsp
+        BeanClient beanClient = new BeanClient((Client) this.utilisateur);
+        request.setAttribute("client", beanClient);
         request.getRequestDispatcher("accueilClient.jsp").forward(request,response);
     }
     private void accueilConseiller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -141,21 +208,30 @@ public class Controleur extends HttpServlet {
     }
 
     private void dernieresOperations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String iban = request.getParameter("Iban");
+        if (iban == null || "".equals(iban))
+            return; //TODO error.jsp
         request.getRequestDispatcher("dernieresOperations.jsp").forward(request,response);
     }
     private void pageVirement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String iban = request.getParameter("Iban");
+        if (iban == null || "".equals(iban))
+            return; //TODO error.jsp
         request.getRequestDispatcher("pageVirement.jsp").forward(request,response);
     }
     private void rib(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String iban = request.getParameter("Iban");
+        if (iban == null || "".equals(iban))
+            return; //TODO error.jsp
+        
+        Client client = (Client) this.utilisateur;
         BeanRib beanRib = new BeanRib();
-        //TODO : set rib
-        beanRib.setPrenom("Joseph");
-        beanRib.setNom("Tartampion");
-        beanRib.setAdresseClient("3, allée des Lilas, Lyonbanne 69. Juste 69.");
-        beanRib.setNomAgence("Pognon");
-        beanRib.setAdresseAgence("10, rue des fouilles, Paris 12345");
-        beanRib.setIban("21376D D DSHFUJE KSJF ZY DJQSD H3UH ZKJFSK43");
-        //TODO : end
+        beanRib.setPrenom(client.getPrenom());
+        beanRib.setNom(client.getNom());
+        beanRib.setAdresseClient("3, allée des Lilas, Lyonbanne 69. Juste 69."); //TODO: il faut une adresse client dans la BDD
+        beanRib.setNomAgence("Pognon"); //TODO: il faut un nom d'agence dans la BDD
+        beanRib.setAdresseAgence(client.getAgence().getAdresse());
+        beanRib.setIban(iban);
         request.setAttribute("rib", beanRib);
         request.getRequestDispatcher("rib.jsp").forward(request,response);
     }
