@@ -11,8 +11,8 @@ public class Operation  implements java.io.Serializable {
 
 
      private int idoperation;
-     private String ibansource;
-     private String ibandestinataire;
+     private Compte source;
+     private Compte destinataire;
      private Date date;
      private double montant;
 
@@ -25,10 +25,10 @@ public class Operation  implements java.io.Serializable {
         this.date = date;
         this.montant = montant;
     }
-    public Operation(int idoperation, String ibansource, String ibandestinataire, Date date, double montant) {
+    public Operation(int idoperation, Compte source, Compte destinataire, Date date, double montant) {
        this.idoperation = idoperation;
-       this.ibansource = ibansource;
-       this.ibandestinataire = ibandestinataire;
+       this.source = source;
+       this.destinataire = destinataire;
        this.date = date;
        this.montant = montant;
     }
@@ -40,19 +40,19 @@ public class Operation  implements java.io.Serializable {
     public void setIdoperation(int idoperation) {
         this.idoperation = idoperation;
     }
-    public String getIbansource() {
-        return this.ibansource;
+    public Compte getSource() {
+        return this.source;
     }
     
-    public void setIbansource(String ibansource) {
-        this.ibansource = ibansource;
+    public void setSource(Compte source) {
+        this.source = source;
     }
-    public String getIbandestinataire() {
-        return this.ibandestinataire;
+    public Compte getDestinataire() {
+        return this.destinataire;
     }
     
-    public void setIbandestinataire(String ibandestinataire) {
-        this.ibandestinataire = ibandestinataire;
+    public void setDestinataire(Compte destinataire) {
+        this.destinataire = destinataire;
     }
     public Date getDate() {
         return this.date;
@@ -68,10 +68,6 @@ public class Operation  implements java.io.Serializable {
     public void setMontant(double montant) {
         this.montant = montant;
     }
-
-
-
-
 }
 
 
