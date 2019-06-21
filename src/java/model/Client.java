@@ -1,7 +1,7 @@
 package model;
 // Generated 21 juin 2019 14:34:53 by Hibernate Tools 4.3.1
 
-import java.util.ArrayList;
+import java.util.Set;
 
 
 
@@ -15,7 +15,7 @@ public class Client extends Utilisateur {
      private int idclient;
      private Agence agence;
      private Conseiller conseiller;
-     private ArrayList<Compte> comptes;
+     private Set<Compte> comptes;
 
     public Client() {
     }
@@ -46,10 +46,10 @@ public class Client extends Utilisateur {
     public void setAgence(Agence agence) {
         this.agence = agence;
     }
-    public ArrayList<Compte> getComptes() {
+    public Set<Compte> getComptes() {
         return comptes;
     }
-    public void setComptes(ArrayList<Compte> comptes) {
+    public void setComptes(Set<Compte> comptes) {
         this.comptes = comptes;
     }
 }

@@ -1,7 +1,7 @@
 package model;
 // Generated 21 juin 2019 14:34:53 by Hibernate Tools 4.3.1
 
-import java.util.ArrayList;
+import java.util.Set;
 
 
 
@@ -13,7 +13,9 @@ public class Compte  implements java.io.Serializable {
 
 
      private String iban;
-     private ArrayList<Client> clients;
+     private Set<Client> clients;
+     private Set<Operation> entrees;
+     private Set<Operation> sorties;
      private double solde;
 
     public Compte() {
@@ -36,11 +38,23 @@ public class Compte  implements java.io.Serializable {
     public void setSolde(double solde) {
         this.solde = solde;
     }
-    public ArrayList<Client> getClients() {
+    public Set<Client> getClients() {
         return clients;
     }
-    public void setClients(ArrayList<Client> clients) {
+    public void setClients(Set<Client> clients) {
         this.clients = clients;
+    }
+    public Set<Operation> getEntrees() {
+        return entrees;
+    }
+    public void setEntrees(Set<Operation> entrees) {
+        this.entrees = entrees;
+    }
+    public Set<Operation> getSorties() {
+        return sorties;
+    }
+    public void setSorties(Set<Operation> sorties) {
+        this.sorties = sorties;
     }
 }
 

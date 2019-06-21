@@ -18,33 +18,31 @@
         <h1>Crédit Gratuit</h1>
         <p>Bienvenue ${client.client.nom} ${client.client.prenom}</p>
         <h2>Mes comptes</h2>
-        <c:forEach items="${client.client.clientComptes}" var="clientCompte">
+        <c:forEach items="${client.client.comptes}" var="compte">
             <div class="compte">
-                <h3>IBAN : ${clientCompte.compte.iban}</h3>
-                <p>Solde : ${clientCompte.compte.solde} €</p>
+                <h3>IBAN : ${compte.iban}</h3>
+                <p>Solde : ${compte.solde} €</p>
                 <form action="Controleur" method="Get">
                     <input type="hidden" name="Operation" value="Dernieres operations">
-                    <input type="hidden" name="Iban" value="${clientCompte.compte.iban}">
+                    <input type="hidden" name="Iban" value="${compte.iban}">
                     <input type="submit" value="Afficher les dernières opérations">
                 </form>
                 <form action="Controleur" method="Get">
-                    <input type="hidden" name="Iban" value="${clientCompte.compte.iban}">
+                    <input type="hidden" name="Iban" value="${compte.iban}">
                     <input type="submit" name="Operation" value="Effectuer un virement">
                 </form>
                 <form action="Controleur" method="Get">
-                    <input type="hidden" name="Iban" value="${clientCompte.compte.iban}">
+                    <input type="hidden" name="Iban" value="${compte.iban}">
                     <input type="submit" name="Operation" value="Obtenir un RIB">
                 </form>
             </div>
         </c:forEach>
         <h2>Mon agence</h2>
         <div>
-            <h3>Adresse</h3>
-            <p>${client.client.agence.adresse}</p>
-            <h3>Téléphone</h3>
-            <p>${client.client.agence.telephone}</p>
-            <h3>Horaires</h3>
-            <p>${client.client.agence.horaires}</p>
+            <p>Nom : ${client.client.agence.nom}</p>
+            <p>Adresse : ${client.client.agence.adresse}</p>
+            <p>Téléphone : ${client.client.agence.telephone}</p>
+            <p>Horaires : ${client.client.agence.horaires}</p>
         </div>
         <h2>Contacter mon conseiller</h2>
         <div class="contact">

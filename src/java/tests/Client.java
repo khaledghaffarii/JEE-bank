@@ -13,8 +13,6 @@ import java.util.ArrayList;
  */
 public class Client extends Utilisateur {
     long idClient;
-    long idConseiller;
-    long idAgence;
     Conseiller conseiller;
     Agence agence;
     ArrayList<ClientCompte> clientComptes;
@@ -33,23 +31,11 @@ public class Client extends Utilisateur {
     public void setIdClient(long idClient) {
         this.idClient = idClient;
     }
-    public long getIdConseiller() {
-        return idConseiller;
-    }
-    public void setIdConseiller(long idConseiller) {
-        this.idConseiller = idConseiller;
-    }
     public Conseiller getConseiller() {
         return conseiller;
     }
     public void setConseiller(Conseiller conseiller) {
         this.conseiller = conseiller;
-    }
-    public long getIdAgence() {
-        return idAgence;
-    }
-    public void setIdAgence(long idAgence) {
-        this.idAgence = idAgence;
     }
     public Agence getAgence() {
         return agence;

@@ -20,5 +20,11 @@
         <property name="montant" type="double">
             <column name="MONTANT" precision="52" scale="0" not-null="true" />
         </property>
+        <many-to-one entity-name="model.Compte">
+            <column name="source" not-null="false" />
+        </many-to-one>
+        <many-to-one entity-name="model.Compte">
+            <column name="destinataire" not-null="false" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

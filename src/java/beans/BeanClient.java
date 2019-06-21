@@ -6,7 +6,7 @@
 package beans;
 
 import java.io.Serializable;
-import tests.*;
+import model.*;
 
 /**
  *
