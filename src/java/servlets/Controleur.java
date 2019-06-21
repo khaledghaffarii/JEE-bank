@@ -12,7 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import tests.*;
+import model.*;
 
 /**
  *
@@ -120,14 +120,12 @@ public class Controleur extends HttpServlet {
         this.utilisateur.setLogin("loginne");
         this.utilisateur.setNom("Martin-Tartampion");
         this.utilisateur.setPrenom("Martine");
-        this.utilisateur.setIdUtilisateur(43);
         this.utilisateur.setTelephone("0606060606");
         //Conseiller
         Conseiller conseiller = new Conseiller();
         conseiller.setLogin("loginne");
         conseiller.setNom("Goldman");
         conseiller.setPrenom("Jean-Jacques");
-        conseiller.setIdUtilisateur(9000);
         conseiller.setTelephone("0987654321");
         ((Client) this.utilisateur).setConseiller(conseiller);
         ((Client) this.utilisateur).setIdConseiller(conseiller.getIdConseiller());
@@ -144,44 +142,44 @@ public class Controleur extends HttpServlet {
         Compte c1 = new Compte();
         c1.setIban("FR76 EZR8 GFD90 345R");
         c1.setSolde(12345.67);
-        ClientCompte c1client = new ClientCompte();
+        Clientcompte c1client = new Clientcompte();
         c1client.setIdClient(this.utilisateur.getIdUtilisateur());
         c1client.setClient((Client) this.utilisateur);
         c1client.setIban(c1.getIban());
         c1client.setCompte(c1);
-        ArrayList<ClientCompte> cc1 = new ArrayList<ClientCompte>();
+        ArrayList<Clientcompte> cc1 = new ArrayList<Clientcompte>();
         cc1.add(c1client);
-        c1.setClientComptes(cc1);
+        c1.setClientcomptes(cc1);
         // 2
         Compte c2 = new Compte();
         c2.setIban("FR76 65KJ OKE0 0EJD");
         c2.setSolde(-43.43);
-        ClientCompte c2client = new ClientCompte();
+        Clientcompte c2client = new Clientcompte();
         c2client.setIdClient(this.utilisateur.getIdUtilisateur());
         c2client.setClient((Client) this.utilisateur);
         c2client.setIban(c2.getIban());
         c2client.setCompte(c2);
-        ArrayList<ClientCompte> cc2 = new ArrayList<ClientCompte>();
+        ArrayList<Clientcompte> cc2 = new ArrayList<Clientcompte>();
         cc2.add(c2client);
-        c2.setClientComptes(cc2);
+        c2.setClientcomptes(cc2);
         // 3
         Compte c3 = new Compte();
         c3.setIban("FR76 HHKI 89RN F032");
         c3.setSolde(-58.30);
-        ClientCompte c3client = new ClientCompte();
+        Clientcompte c3client = new Clientcompte();
         c3client.setIdClient(this.utilisateur.getIdUtilisateur());
         c3client.setClient((Client) this.utilisateur);
         c3client.setIban(c3.getIban());
         c3client.setCompte(c3);
-        ArrayList<ClientCompte> cc3 = new ArrayList<ClientCompte>();
+        ArrayList<Clientcompte> cc3 = new ArrayList<Clientcompte>();
         cc3.add(c3client);
-        c3.setClientComptes(cc3);
+        c3.setClientcomptes(cc3);
         // Making it so that the client knows their accounts
-        ArrayList<ClientCompte> cc = new ArrayList<ClientCompte>();
+        ArrayList<Clientcompte> cc = new ArrayList<Clientcompte>();
         cc.add(c1client);
         cc.add(c2client);
         cc.add(c3client);
-        ((Client) this.utilisateur).setClientComptes(cc);
+        ((Client) this.utilisateur).setClientcomptes(cc);
         
       if (this.utilisateur == null) {
             request.setAttribute("erreur", "L'authentification a échoué.");
