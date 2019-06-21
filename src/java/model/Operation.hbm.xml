@@ -8,12 +8,12 @@
             <column name="IDOPERATION" />
             <generator class="assigned" />
         </id>
-        <property name="ibansource" type="string">
+        <many-to-one name="source" class="modele.Compte">
             <column name="IBANSOURCE" length="50" />
-        </property>
-        <property name="ibandestinataire" type="string">
+        </many-to-one>
+        <many-to-one name="destinataire" class="modele.Compte">
             <column name="IBANDESTINATAIRE" length="50" />
-        </property>
+        </many-to-one>
         <property name="date" type="date">
             <column name="DATE" length="10" not-null="true" />
         </property>
