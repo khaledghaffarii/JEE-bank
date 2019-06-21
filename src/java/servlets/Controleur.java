@@ -58,8 +58,6 @@ public class Controleur extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        System.out.println(request.getParameter("Operation"));
-        
         switch(request.getParameter("Operation")){
             case "Dernieres operations" :
                 dernieresOperations(request, response);
