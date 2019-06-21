@@ -51,7 +51,7 @@ public class Operation  implements java.io.Serializable {
         return this.destinataire;
     }
     
-    public void setDestinataire(Compte ibandestinataire) {
+    public void setDestinataire(Compte destinataire) {
         this.destinataire = destinataire;
     }
     public Date getDate() {
