@@ -1,5 +1,6 @@
 # Project file
 nbproject/private/private.properties
+nbproject/private/private.xml
 
 # Compiled class file
 *.class
