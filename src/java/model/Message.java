@@ -11,16 +11,16 @@ public class Message  implements java.io.Serializable {
 
 
      private int idmessage;
-     private int idclient;
+     private Client client;
      private Date date;
      private String contenu;
 
     public Message() {
     }
 
-    public Message(int idmessage, int idclient, Date date, String contenu) {
+    public Message(int idmessage, Client client, Date date, String contenu) {
        this.idmessage = idmessage;
-       this.idclient = idclient;
+       this.client = client;
        this.date = date;
        this.contenu = contenu;
     }
@@ -32,12 +32,12 @@ public class Message  implements java.io.Serializable {
     public void setIdmessage(int idmessage) {
         this.idmessage = idmessage;
     }
-    public int getIdclient() {
-        return this.idclient;
+    public Client getClient() {
+        return this.client;
     }
     
-    public void setIdclient(int idclient) {
-        this.idclient = idclient;
+    public void setClient(Client client) {
+        this.client = client;
     }
     public Date getDate() {
         return this.date;

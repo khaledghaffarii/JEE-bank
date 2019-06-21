@@ -8,9 +8,9 @@
             <column name="IDMESSAGE" />
             <generator class="assigned" />
         </id>
-        <property name="idclient" type="int">
+        <many-to-one name="client" class="model.Client">
             <column name="IDCLIENT" not-null="true" />
-        </property>
+        </many-to-one>
         <property name="date" type="date">
             <column name="DATE" length="10" not-null="true" />
         </property>

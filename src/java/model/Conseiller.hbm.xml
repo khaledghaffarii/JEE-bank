@@ -29,8 +29,8 @@
         <property name="mail" type="string">
             <column name="MAIL" length="100" not-null="true" />
         </property>
-        <property name="idagence" type="int">
+        <many-to-one name="agence" type="int">
             <column name="IDAGENCE" not-null="true" />
-        </property>
+        </many-to-one>
     </class>
 </hibernate-mapping>

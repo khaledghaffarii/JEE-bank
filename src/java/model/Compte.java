@@ -1,6 +1,9 @@
 package model;
 // Generated 21 juin 2019 14:34:53 by Hibernate Tools 4.3.1
 
+import java.util.ArrayList;
+
+
 
 
 /**
@@ -10,6 +13,7 @@ public class Compte  implements java.io.Serializable {
 
 
      private String iban;
+     private ArrayList<Client> clients;
      private double solde;
 
     public Compte() {
@@ -23,21 +27,21 @@ public class Compte  implements java.io.Serializable {
     public String getIban() {
         return this.iban;
     }
-    
     public void setIban(String iban) {
         this.iban = iban;
     }
     public double getSolde() {
         return this.solde;
     }
-    
     public void setSolde(double solde) {
         this.solde = solde;
     }
-
-
-
-
+    public ArrayList<Client> getClients() {
+        return clients;
+    }
+    public void setClients(ArrayList<Client> clients) {
+        this.clients = clients;
+    }
 }
 
 

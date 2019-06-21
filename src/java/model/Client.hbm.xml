@@ -35,5 +35,8 @@
         <many-to-one name="agence" class="modele.Agence">
             <column name="IDAGENCE" not-null="true" />
         </many-to-one>
+        <many-to-many entity-name="model.Compte">
+            <column name="comptes" not-null="true" />
+        </many-to-many>
     </class>
 </hibernate-mapping>

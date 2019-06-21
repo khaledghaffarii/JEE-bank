@@ -8,6 +8,9 @@
             <column name="IBAN" length="50" />
             <generator class="assigned" />
         </id>
+        <many-to-many entity-name="model.Client">
+            <column name="clients" not-null="true" />
+        </many-to-many>
         <property name="solde" type="double">
             <column name="SOLDE" precision="52" scale="0" not-null="true" />
         </property>

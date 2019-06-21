@@ -17,15 +17,15 @@ public class Conseiller extends Utilisateur {
      private String adresse;
      private String telephone;
      private String mail;
-     private int idagence;
+     private Agence agence;
 
     public Conseiller() {
     }
 
-    public Conseiller(int idconseiller, String login, String pwd, String nom, String prenom, String adresse, String telephone, String mail, int idagence) {
+    public Conseiller(int idconseiller, String login, String pwd, String nom, String prenom, String adresse, String telephone, String mail, Agence agence) {
        super(login, pwd, nom, prenom, adresse, telephone, mail);
        this.idconseiller = idconseiller;
-       this.idagence = idagence;
+       this.agence = agence;
     }
    
     public int getIdconseiller() {
@@ -35,12 +35,12 @@ public class Conseiller extends Utilisateur {
     public void setIdconseiller(int idconseiller) {
         this.idconseiller = idconseiller;
     }
-    public int getIdagence() {
-        return this.idagence;
+    public Agence getIdagence() {
+        return this.agence;
     }
     
-    public void setIdagence(int idagence) {
-        this.idagence = idagence;
+    public void setIdagence(Agence agence) {
+        this.agence = agence;
     }
 
 
