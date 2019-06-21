@@ -17,8 +17,9 @@ public class Conseiller extends Utilisateur {
 
     public Conseiller() {
     }
-    public Conseiller(long idConseiller, long idUtilisateur, String login, String pwd, String nom, String prenom, String telephone, String mail) {
-        super(idUtilisateur, login, pwd, nom, prenom, telephone, mail);
+    public Conseiller(long idConseiller, long idUtilisateur, String login, String pwd, String nom, String prenom,
+            String adresse, String telephone, String mail) {
+        super(idUtilisateur, login, pwd, nom, adresse, prenom, telephone, mail);
         this.idConseiller = idConseiller;
     }
 

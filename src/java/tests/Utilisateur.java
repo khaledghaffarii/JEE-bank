@@ -17,16 +17,19 @@ public abstract class Utilisateur implements Serializable {
     String pwd;
     String nom;
     String prenom;
+    String adresse;
     String telephone;
     String mail;
 
     public Utilisateur() {
     }
-    public Utilisateur(long idUtilisateur, String login, String pwd, String nom, String prenom, String telephone, String mail) {
+    public Utilisateur(long idUtilisateur, String login, String pwd, String nom, String prenom,
+            String adresse, String telephone, String mail) {
         this.idUtilisateur = idUtilisateur;
         this.login = login;
         this.pwd = pwd;
         this.nom = nom;
+        this.adresse = adresse;
         this.prenom = prenom;
         this.telephone = telephone;
         this.mail = mail;
@@ -61,6 +64,12 @@ public abstract class Utilisateur implements Serializable {
     }
     public void setPrenom(String prenom) {
         this.prenom = prenom;
+    }
+    public String getAdresse() {
+        return adresse;
+    }
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
     public String getTelephone() {
         return telephone;

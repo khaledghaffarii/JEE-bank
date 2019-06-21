@@ -13,19 +13,27 @@ import java.io.Serializable;
  */
 public class Agence implements Serializable {
     long idAgence;
+    String nom;
     String horaires;
     String telephone;
     String adresse;
 
     public Agence() {
     }
-    public Agence(long idAgence, String horaires, String telephone, String adresse) {
+    public Agence(long idAgence, String nom, String horaires, String telephone, String adresse) {
+        this.nom = nom;
         this.idAgence = idAgence;
         this.horaires = horaires;
         this.telephone = telephone;
         this.adresse = adresse;
     }
 
+    public String getNom() {
+        return nom;
+    }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
     public long getIdAgence() {
         return idAgence;
     }

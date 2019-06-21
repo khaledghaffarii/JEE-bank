@@ -21,8 +21,9 @@ public class Client extends Utilisateur {
 
     public Client() {
     }
-    public Client(long idClient, long idUtilisateur, String login, String pwd, String nom, String prenom, String telephone, String mail) {
-        super(idUtilisateur, login, pwd, nom, prenom, telephone, mail);
+    public Client(long idClient, long idUtilisateur, String login, String pwd, String nom, String prenom,
+            String adresse, String telephone, String mail) {
+        super(idUtilisateur, login, pwd, nom, prenom, adresse, telephone, mail);
         this.idClient = idClient;
     }
 

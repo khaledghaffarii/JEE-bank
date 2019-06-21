@@ -234,8 +234,8 @@ public class Controleur extends HttpServlet {
         BeanRib beanRib = new BeanRib();
         beanRib.setPrenom(client.getPrenom());
         beanRib.setNom(client.getNom());
-        beanRib.setAdresseClient("3, allée des Lilas, Lyonbanne 69. Juste 69."); //TODO: il faut une adresse client dans la BDD
-        beanRib.setNomAgence("Pognon"); //TODO: il faut un nom d'agence dans la BDD
+        beanRib.setAdresseClient(client.getAdresse()); //TODO: il faut une adresse client dans la BDD
+        beanRib.setNomAgence(client.getAgence().getNom()); //TODO: il faut un nom d'agence dans la BDD
         beanRib.setAdresseAgence(client.getAgence().getAdresse());
         beanRib.setIban(iban);
         request.setAttribute("rib", beanRib);
