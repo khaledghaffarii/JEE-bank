@@ -16,6 +16,10 @@
     </head>
     <body>
         <h1>Crédit Gratuit</h1>
+        <form action="Controleur" method="POST">
+            <input type="hidden" value="Se deconnecter" name="Operation" hidden />
+            <input type="submit" value="Se déconnecter" />
+        </form>
         <p>Bienvenue ${client.client.nom} ${client.client.prenom}</p>
         <h2>Mes comptes</h2>
         <c:forEach items="${client.client.comptes}" var="compte">

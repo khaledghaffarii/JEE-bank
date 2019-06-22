@@ -14,7 +14,7 @@
     <body>
         <h1>Crédit Gratuit</h1>
         <form action="Controleur" method="GET">
-            <input type="hidden" value="Accueil Client" name="Operation" hidden />
+            <input type="hidden" value="Accueil" name="Operation" hidden />
             <input type="submit" value="Retour" />
         </form>
     </body>

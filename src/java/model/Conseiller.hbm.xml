@@ -32,5 +32,12 @@
         <many-to-one name="agence" type="int">
             <column name="IDAGENCE" not-null="true" />
         </many-to-one>
+        <set name="clients" table="model.Client" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="source" not-null="false" />
+            </key>
+            <one-to-many class="model.Client" />
+        </set>
     </class>
 </hibernate-mapping>

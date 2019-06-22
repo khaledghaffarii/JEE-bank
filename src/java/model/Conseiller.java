@@ -1,6 +1,9 @@
 package model;
 // Generated 21 juin 2019 14:34:53 by Hibernate Tools 4.3.1
 
+import java.util.Set;
+
+
 
 
 /**
@@ -18,6 +21,7 @@ public class Conseiller extends Utilisateur {
      private String telephone;
      private String mail;
      private Agence agence;
+     private Set<Client> clients;
 
     public Conseiller() {
     }
@@ -31,21 +35,21 @@ public class Conseiller extends Utilisateur {
     public int getIdconseiller() {
         return this.idconseiller;
     }
-    
     public void setIdconseiller(int idconseiller) {
         this.idconseiller = idconseiller;
     }
-    public Agence getIdagence() {
+    public Agence getAgence() {
         return this.agence;
     }
-    
-    public void setIdagence(Agence agence) {
+    public void setAgence(Agence agence) {
         this.agence = agence;
     }
-
-
-
-
+    public Set<Client> getClients() {
+        return clients;
+    }
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
 }
 
 

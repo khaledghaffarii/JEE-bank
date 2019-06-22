@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.*;
+import service.ClientService;
 
 /**
  *
@@ -26,9 +27,11 @@ public class Controleur extends HttpServlet {
     // Tableau tab;// un javabean
 //    Session bddSession;
     Utilisateur utilisateur;
+    ClientService clientService;
     public void init(){
 //        this.bddSession = Hibernate.instance().getSession();
         this.utilisateur = null;
+        this.clientService = ClientService.instance();
     }
 
     /**
@@ -42,7 +45,6 @@ public class Controleur extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,20 +64,32 @@ public class Controleur extends HttpServlet {
             return;
         }
         switch(request.getParameter("Operation")){
+            // Vues communes
+            case "Accueil" :
+                accueil(request, response);
+            break;
+            // Vues client
             case "Dernieres operations" :
                 dernieresOperations(request, response);
             break;
             case "Effectuer un virement" :
-                pageVirement(request, response);
+                pageVirementClient(request, response);
             break;
             case "Obtenir un RIB" :
                 rib(request, response);
             break;
-            case "Accueil Client" :
-                accueilClient(request, response);
+            // Vues conseiller
+            case "Mes clients" :
+                listeClients(request, response);
+            break;
+            case "Mon client" :
+                detailsClient(request, response);
+            break;
+            case "Ajouter un client" :
+                nouveauClient(request, response);
             break;
             default:
-                response.sendRedirect("login.jsp");
+                erreur(request, response, "Opération get inconnue : " + request.getParameter("Operation"));
             break;
         }
     }
@@ -95,10 +109,15 @@ public class Controleur extends HttpServlet {
             case "Se connecter" :
                 connecter(request, response);
             break;
-            case "inserer un enregistrement" :
+            case "Se deconnecter" :
+                deconnecter(request, response);
             break;
-            case "Enregistrer" :
-                break;               
+            case "Nouveau client" :
+                creerClient(request, response);
+            break;
+            default:
+                erreur(request, response, "Opération post inconnue : " + request.getParameter("Operation"));
+            break;
         }            
     }
 
@@ -112,6 +131,7 @@ public class Controleur extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Vues communes. Click on the + sign on the left to edit the code.">
     private void connecter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
@@ -119,20 +139,23 @@ public class Controleur extends HttpServlet {
         //TODO Recherche du compte
         
         //test
-        this.utilisateur = new Client();
-        this.utilisateur.setLogin("loginne");
-        this.utilisateur.setNom("Martin-Tartampion");
-        this.utilisateur.setPrenom("Martine");
-        this.utilisateur.setAdresse("3 allée des hortensias, Moncu");
-        this.utilisateur.setMail("matrine@unv-iut.lyon-1.fr.fr");
-        this.utilisateur.setTelephone("0606060606");
+        Client client = new Client();
+        client.setLogin("loginne");
+        client.setNom("Martin-Tartampion");
+        client.setPrenom("Martine");
+        client.setAdresse("3 allée des hortensias, Moncu");
+        client.setMail("matrine@unv-iut.lyon-1.fr.fr");
+        client.setTelephone("0606060606");
         //Conseiller
         Conseiller conseiller = new Conseiller();
         conseiller.setLogin("loginne");
         conseiller.setNom("Goldman");
         conseiller.setPrenom("Jean-Jacques");
         conseiller.setTelephone("0987654321");
-        ((Client) this.utilisateur).setConseiller(conseiller);
+        client.setConseiller(conseiller);
+        Set<Client> clients = new HashSet<Client>();
+        clients.add(client);
+        conseiller.setClients(clients);
         // Agence
         Agence agence = new Agence();
         agence.setNom("Nomen");
@@ -140,20 +163,12 @@ public class Controleur extends HttpServlet {
         agence.setHoraires("Lundi : 8h-9h\nMardi:5h-9h33\nFermé le reste de la semaine");
         agence.setIdagence(7);
         agence.setTelephone("1234567890");
-        ((Client) this.utilisateur).setAgence(agence);
+        client.setAgence(agence);
+        conseiller.setAgence(agence);
         // Comptes
-        // 1
-        Compte c1 = new Compte();
-        c1.setIban("FR76 EZR8 GFD90 345R");
-        c1.setSolde(12345.67);
-        // 2
-        Compte c2 = new Compte();
-        c2.setIban("FR76 65KJ OKE0 0EJD");
-        c2.setSolde(-43.43);
-        // 3
-        Compte c3 = new Compte();
-        c3.setIban("FR76 HHKI 89RN F032");
-        c3.setSolde(-58.30);
+        Compte c1 = new Compte("FR76 EZR8 GFD90 345R", 12345.67);
+        Compte c2 = new Compte("FR76 65KJ OKE0 0EJD", -43.43);
+        Compte c3 = new Compte("FR76 HHKI 89RN F032", -58.30);
         //Opérations
         Operation c1op1 = new Operation();
         c1op1.setDate(new Date());
@@ -197,47 +212,54 @@ public class Controleur extends HttpServlet {
         comptes.add(c1);
         comptes.add(c2);
         comptes.add(c3);
-        ((Client) this.utilisateur).setComptes(comptes);
+        client.setComptes(comptes);
         
-      if (this.utilisateur == null) {
+        // Ici, on décide si on veut tester la vue Client ou Conseiller
+        this.utilisateur = conseiller;
+        
+        if (this.utilisateur == null) {
             request.setAttribute("erreur", "L'authentification a échoué.");
             request.getRequestDispatcher("login.jsp").forward(request,response);
+            return;
         }
-      else if (this.utilisateur instanceof Client)
-            accueilClient(request, response);
-      else if (this.utilisateur instanceof Conseiller)
-            accueilConseiller(request, response);
+        accueil(request, response);
+    }
+    private void deconnecter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.utilisateur = null;
+        request.getRequestDispatcher("login.jsp").forward(request,response);
     }
 
-    private void accueilClient(HttpServletRequest request, HttpServletResponse response)
+    private void accueil(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        verifierClient(request, response);
-        BeanClient beanClient = new BeanClient((Client) this.utilisateur);
-        request.setAttribute("client", beanClient);
-        request.getRequestDispatcher("accueilClient.jsp").forward(request,response);
-    }
-    private void accueilConseiller(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        verifierConseiller(request, response);
-        request.getRequestDispatcher("accueilConseiller.jsp").forward(request,response);
-    }
+        verifierConnection(request, response);
+        if (this.utilisateur instanceof Client) {
+            BeanClient beanClient = new BeanClient((Client) this.utilisateur);
+            request.setAttribute("client", beanClient);
+            request.getRequestDispatcher("accueilClient.jsp").forward(request,response);
+        }
+        else if (this.utilisateur instanceof Conseiller) {
+            BeanConseillerDecouverts beanConseiller = new BeanConseillerDecouverts((Conseiller) this.utilisateur);
+            request.setAttribute("conseiller", beanConseiller);
+            request.getRequestDispatcher("accueilConseiller.jsp").forward(request,response);
+        }
+    }// </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Vues client. Click on the + sign on the left to edit the code.">
     private void dernieresOperations(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
-            erreurClient(request, response, "Il faut un IBAN pour consulter un compte.");
+            erreur(request, response, "Il faut un IBAN pour consulter un compte.");
         
         //récupération du compte parmi les comptes de l'utilisateur.
         request.setAttribute("compte", new BeanCompte(verifierIbanClient(request, response, iban)));
         request.getRequestDispatcher("dernieresOperations.jsp").forward(request,response);
     }
-    private void pageVirement(HttpServletRequest request, HttpServletResponse response)
+    private void pageVirementClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
-            erreurClient(request, response, "Il faut un IBAN pour initier un virement.");
-        //TODO : vérifier que l'iban fait partie des comptes de l'utilisateur, ou renvoyer sur erreur (sécurité).
+            erreur(request, response, "Il faut un IBAN pour initier un virement.");
         request.setAttribute("compte", new BeanCompte(verifierIbanClient(request, response, iban)));
         request.setAttribute("client", (Client) this.utilisateur);
         request.getRequestDispatcher("pageVirement.jsp").forward(request,response);
@@ -246,32 +268,66 @@ public class Controleur extends HttpServlet {
             throws ServletException, IOException {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
-            erreurClient(request, response, "Il faut un IBAN pour éditer un RIB.");
-        //TODO : vérifier que l'iban fait partie des comptes de l'utilisateur, ou renvoyer sur erreur (sécurité).
+            erreur(request, response, "Il faut un IBAN pour éditer un RIB.");
+        verifierIbanClient(request, response, iban);
         
         Client client = (Client) this.utilisateur;
         BeanRib beanRib = new BeanRib();
         beanRib.setPrenom(client.getPrenom());
         beanRib.setNom(client.getNom());
-        beanRib.setAdresseClient(client.getAdresse()); //TODO: il faut une adresse client dans la BDD
-        beanRib.setNomAgence(client.getAgence().getNom()); //TODO: il faut un nom d'agence dans la BDD
+        beanRib.setAdresseClient(client.getAdresse()); 
+        beanRib.setNomAgence(client.getAgence().getNom()); 
         beanRib.setAdresseAgence(client.getAgence().getAdresse());
         beanRib.setIban(iban);
         request.setAttribute("rib", beanRib);
         request.getRequestDispatcher("rib.jsp").forward(request,response);
-    }
-    private void erreurClient(HttpServletRequest request, HttpServletResponse response, String message)
+    }// </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Vues conseiller. Click on the + sign on the left to edit the code.">
+    private void listeClients(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BeanErreur beanErreur = new BeanErreur(message, "Accueil Client");
+        BeanConseiller beanConseiller = new BeanConseiller((Conseiller) this.utilisateur);
+        request.setAttribute("conseiller", beanConseiller);
+        request.getRequestDispatcher("listeClients.jsp").forward(request,response);
+    }
+    private void detailsClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String clientIdString = request.getParameter("ClientId");
+        int clientId;
+        try {
+          clientId = clientIdString != null ? new Integer(clientIdString) : -1;
+        } catch (NumberFormatException e) {
+          clientId =  -1;
+        }
+        Client client = clientId != -1 ? clientService.findByClientid(clientId) : null;
+        
+        if (client == null)
+            erreur(request, response, "Aucun client n'a été trouvé pour l'identifiant " + clientIdString);
+        
+        //TODO: vérifier que le client fait partie des clients du conseiller
+        System.out.println("TODO: pour sécurité, vérifier que le client fait partie des clients du conseiller");
+        
+        BeanClientOperations beanClientOperations = new BeanClientOperations(client);
+        request.setAttribute("client", beanClientOperations);
+        request.getRequestDispatcher("detailsClient.jsp").forward(request,response);
+    }
+    private void nouveauClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("nouveauClient.jsp").forward(request,response);
+    }// </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Vues sécurité. Click on the + sign on the left to edit the code.">
+    private void erreur(HttpServletRequest request, HttpServletResponse response, String message)
+            throws ServletException, IOException {
+        BeanErreur beanErreur = new BeanErreur(message, "Accueil");
         request.setAttribute("erreur", beanErreur);
         request.getRequestDispatcher("erreur.jsp").forward(request,response);
     }
-    
     private Compte verifierIbanClient(HttpServletRequest request, HttpServletResponse response, String iban)
             throws ServletException, IOException {
         verifierClient(request, response);
         if (iban == null || "".equals(iban))
-            erreurClient(request, response, "Il est null, ton iban.");
+            erreur(request, response, "Il est null, ton iban.");
         Compte compte = null, current;
         Iterator<Compte> comptes = ((Client) this.utilisateur).getComptes().iterator();
         while (compte == null && comptes.hasNext()){
@@ -279,8 +335,15 @@ public class Controleur extends HttpServlet {
             compte = iban.equals(current.getIban()) ? current : null;
         }
         if (compte == null)
-            erreurClient(request, response, "Vous n'êtes pas propriétaire du compte correspondant à cet IBAN.");
+            erreur(request, response, "Vous n'êtes pas propriétaire du compte correspondant à cet IBAN.");
         return compte;
+    }
+    private void verifierConnection(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (this.utilisateur == null){
+            request.setAttribute("erreur", "Vous n'étiez pas authentifié.");
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+        }
     }
     private void verifierClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -297,5 +360,24 @@ public class Controleur extends HttpServlet {
             request.setAttribute("erreur", "Vous n'étiez pas authentifié en tant que conseiller.");
             request.getRequestDispatcher("login.jsp").forward(request,response);
         }
+    }// </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Actions. Click on the + sign on the left to edit the code.">
+    private void creerClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        verifierConseiller(request, response);
+        String login = request.getParameter("login");
+        String mdp = request.getParameter("mdp");
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String adresse = request.getParameter("adresse");
+        String telephone = request.getParameter("telephone");
+        String mail = request.getParameter("mail");
+        
+        //TODO: création du client
+        System.out.println("TODO: création du client");
+        
+        accueil(request, response);
     }
+    // </editor-fold>
 }

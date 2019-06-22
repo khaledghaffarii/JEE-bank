@@ -17,7 +17,7 @@
     <body>
         <h1>Crédit Gratuit</h1>
         <form action="Controleur" method="GET">
-            <input type="hidden" value="Accueil Client" name="Operation" hidden />
+            <input type="hidden" value="Retour" name="Operation" hidden />
             <input type="submit" value="Retour" />
         </form>
         <h2>Historique du compte</h2>
@@ -49,6 +49,16 @@
                 </p>
                 <p>Date : ${operation.date}</p>
                 <p>Montant : ${operation.montant}</p>
+                <c:choose>
+                    <c:when test="${operation.source != null && operation.destinataire == compte.compte}">
+                        <p>De : ${operation.source.iban}</p>
+                    </c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${operation.source == compte.compte && operation.destinataire != null}">
+                        <p>Vers : ${operation.destinataire.iban}</p>
+                    </c:when>  
+                </c:choose>
             </div>
         </c:forEach>
     </body>

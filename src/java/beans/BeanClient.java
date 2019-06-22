@@ -13,7 +13,7 @@ import model.*;
  * @author Home
  */
 public class BeanClient implements Serializable {
-    private Client client; //TODO: change from object
+    protected Client client; //TODO: change from object
     
     public BeanClient() { }
     public BeanClient(Client client) {
