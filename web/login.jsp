@@ -20,7 +20,7 @@
         %></p>
         <form action="Controleur" method="POST">
             <input type="text" name="login" required />
-            <input type="text" name="password" required />
+            <input type="password" name="password" required />
             <input type="submit" value="Se connecter" name="Operation" />
         </form>
     </body>

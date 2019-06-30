@@ -15,14 +15,14 @@
             <column name="SOLDE" precision="52" scale="0" not-null="true" />
         </property>
         <set name="entrees" table="model.Operation" 
-				inverse="true" lazy="true" fetch="select">
+				inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="source" not-null="false" />
             </key>
             <one-to-many class="model.Operation" />
         </set>
         <set name="sorties" table="model.Operation" 
-				inverse="true" lazy="true" fetch="select">
+				inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="destinataire" not-null="false" />
             </key>

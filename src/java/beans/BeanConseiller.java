@@ -6,7 +6,6 @@
 package beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import model.*;
 
 /**

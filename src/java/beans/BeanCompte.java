@@ -17,10 +17,16 @@ import model.*;
 public class BeanCompte implements Serializable {
     private Compte compte; //TODO: change from object
     private ArrayList<Operation> operations;
+    private String clientType;
     
     public BeanCompte() { }
     public BeanCompte(Compte compte) {
         this.compte = compte;
+        updateOperations();
+    }
+    public BeanCompte(Compte compte, String clientType) {
+        this.compte = compte;
+        this.clientType = clientType;
         updateOperations();
     }
     
@@ -36,6 +42,12 @@ public class BeanCompte implements Serializable {
     }
     public void setOperations(ArrayList<Operation> operations) {
         this.operations = operations;
+    }
+    public String getClientType() {
+        return clientType;
+    }
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
     
     public void updateOperations() {

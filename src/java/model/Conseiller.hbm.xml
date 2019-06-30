@@ -33,7 +33,7 @@
             <column name="IDAGENCE" not-null="true" />
         </many-to-one>
         <set name="clients" table="model.Client" 
-				inverse="true" lazy="true" fetch="select">
+				inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="source" not-null="false" />
             </key>

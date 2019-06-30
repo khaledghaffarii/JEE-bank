@@ -34,6 +34,7 @@ public class ClientService {
         
         //test
         Client client = new Client();
+        client.setIdclient(1);
         client.setLogin("loginne");
         client.setNom("Martin-Tartampion");
         client.setPrenom("Martine");
@@ -62,7 +63,16 @@ public class ClientService {
         // Comptes
         Compte c1 = new Compte("FR76 EZR8 GFD90 345R", 12345.67);
         Compte c2 = new Compte("FR76 65KJ OKE0 0EJD", -43.43);
-        Compte c3 = new Compte("FR76 HHKI 89RN F032", -58.30);
+        Compte c3 = new Compte("FR76 HHKI 89RN F032", 0);
+        HashSet<Client> c1clients = new HashSet<Client>();
+        c1clients.add(client);
+        HashSet<Client> c2clients = new HashSet<Client>();
+        c2clients.add(client);
+        HashSet<Client> c3clients = new HashSet<Client>();
+        c3clients.add(client);
+        c1.setClients(c1clients);
+        c2.setClients(c2clients);
+        c3.setClients(c3clients);
         //Opérations
         Operation c1op1 = new Operation();
         c1op1.setDate(new Date());
@@ -109,5 +119,9 @@ public class ClientService {
         client.setComptes(comptes);
         
         return client;
+    }
+
+    public void creerClient(String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
+        System.out.println("TODO: création du client");
     }
 }

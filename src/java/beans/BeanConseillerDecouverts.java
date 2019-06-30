@@ -40,12 +40,20 @@ public class BeanConseillerDecouverts extends BeanConseiller {
     }
     
     private void updateDecouverts() {
+System.out.println("HERE " + this.conseiller != null);
         if (this.conseiller == null || this.conseiller.getClients() == null)
             return;
+System.out.println("HERE2 ");
         this.decouverts = new ArrayList<Compte>();
         for (Client client : this.conseiller.getClients())
+        {
+System.out.println("CLIENT " + client.getNom());
             for (Compte compte : client.getComptes())
+            {
+System.out.println("Compte " + compte.getIban() + " " + compte.getSolde());
                 if (compte.getSolde() < 0.)
                     this.decouverts.add(compte);
+            }
+        }
     }
 }

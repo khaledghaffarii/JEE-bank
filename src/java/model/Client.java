@@ -52,6 +52,14 @@ public class Client extends Utilisateur {
     public void setComptes(Set<Compte> comptes) {
         this.comptes = comptes;
     }
+    
+    @Override
+    public boolean equals(Object that){
+        if (!(that instanceof Client))
+            return false;
+        Client other = (Client) that;
+        return new Integer(this.idclient).equals(other.getIdclient());
+    }
 }
 
 

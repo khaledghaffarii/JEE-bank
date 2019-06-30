@@ -9,7 +9,7 @@
        uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-    <jsp:useBean id="conseiller" class="beans.BeanConseillerDecouverts" scope="request" />
+    <jsp:useBean id="conseiller" class="beans.BeanConseiller" scope="request" />
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Accueil</title>
@@ -30,21 +30,25 @@
         </form>
         <p>Bienvenue ${conseiller.conseiller.nom} ${conseiller.conseiller.prenom}</p>
         <h2>Comptes en découvert</h2>
-        <c:forEach items="${conseiller.decouverts}" var="compte">
-            <div class="compte">
-                <h3>IBAN : ${compte.iban}</h3>
-                <p>Solde : ${compte.solde} €</p>
-                <p>Client : 
-                    <c:forEach items="${compte.clients}" var="client">
-                        ${client.nom} ${client.prenom}
-                    </c:forEach>
-                </p>
-                <form action="Controleur" method="Get">
-                    <input type="hidden" name="Operation" value="Dernieres operations">
-                    <input type="hidden" name="Iban" value="${compte.iban}">
-                    <input type="submit" value="Afficher les dernières opérations">
-                </form>
-            </div>
+        <c:forEach items="${conseiller.conseiller.clients}" var="client">
+            <c:forEach items="${client.comptes}" var="compte">
+                <c:if test = "${compte.solde < 0.}">
+                    <div class="compte">
+                        <h3>IBAN : ${compte.iban}</h3>
+                        <p>Solde : ${compte.solde} €</p>
+                        <p>Client : 
+                            <c:forEach items="${compte.clients}" var="client">
+                                ${client.nom} ${client.prenom}
+                            </c:forEach>
+                        </p>
+                        <form action="Controleur" method="Get">
+                            <input type="hidden" name="Operation" value="Dernieres operations">
+                            <input type="hidden" name="Iban" value="${compte.iban}">
+                            <input type="submit" value="Afficher les dernières opérations">
+                        </form>
+                    </div>
+                </c:if>
+            </c:forEach>
         </c:forEach>
         <h2>Mon agence</h2>
         <div>

@@ -54,6 +54,7 @@
                     </form>
                     <form action="Controleur" method="Post">
                         <input type="hidden" name="Iban" value="${compte.iban}">
+                        <input type="hidden" name="ClientId" value="${client.client.idclient}">
                         <input type="submit" name="Operation" value="Supprimer le compte">
                     </form>
                 </div>

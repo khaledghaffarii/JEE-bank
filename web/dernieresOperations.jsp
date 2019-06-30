@@ -17,9 +17,22 @@
     <body>
         <h1>Crédit Gratuit</h1>
         <form action="Controleur" method="GET">
-            <input type="hidden" value="Retour" name="Operation" hidden />
+            <input type="hidden" value="Accueil" name="Operation" hidden />
             <input type="submit" value="Retour" />
         </form>
+        <c:if test="${compte.clientType == 'Conseiller'}">
+            <c:forEach items="${compte.compte.clients}" var="client">
+            <form action="Controleur" method="GET">
+                <input type="hidden" value="Mon client" name="Operation" hidden />
+                <input type="hidden" value="${client.idclient}" name="ClientId" hidden />
+                <input type="submit" value="Détails du propriétaire ${client.nom} ${client.prenom}" />
+            </form>
+            </c:forEach>
+            <form action="Controleur" method="GET">
+                <input type="hidden" value="Mes clients" name="Operation" hidden />
+                <input type="submit" value="Retour à la liste des clients" />
+        </form>
+        </c:if>
         <h2>Historique du compte</h2>
         <div class="compte">
             <h3>IBAN : ${compte.compte.iban}</h3>
