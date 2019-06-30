@@ -15,6 +15,7 @@ public class Operation  implements java.io.Serializable, Comparable {
      private Compte destinataire;
      private Date date;
      private double montant;
+     private String libelle;
 
     public Operation() {
     }
@@ -25,39 +26,36 @@ public class Operation  implements java.io.Serializable, Comparable {
         this.date = date;
         this.montant = montant;
     }
-    public Operation(int idoperation, Compte source, Compte destinataire, Date date, double montant) {
+    public Operation(int idoperation, Compte source, Compte destinataire, Date date, double montant, String libelle) {
        this.idoperation = idoperation;
        this.source = source;
        this.destinataire = destinataire;
        this.date = date;
        this.montant = montant;
+       this.libelle = libelle;
     }
    
     public int getIdoperation() {
         return this.idoperation;
     }
-    
     public void setIdoperation(int idoperation) {
         this.idoperation = idoperation;
     }
     public Compte getSource() {
         return this.source;
     }
-    
     public void setSource(Compte source) {
         this.source = source;
     }
     public Compte getDestinataire() {
         return this.destinataire;
     }
-    
     public void setDestinataire(Compte destinataire) {
         this.destinataire = destinataire;
     }
     public Date getDate() {
         return this.date;
     }
-    
     public void setDate(Date date) {
         this.date = date;
     }
@@ -66,6 +64,12 @@ public class Operation  implements java.io.Serializable, Comparable {
     }
     public void setMontant(double montant) {
         this.montant = montant;
+    }
+    public String getLibelle() {
+        return libelle;
+    }
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
     }
     
     @Override

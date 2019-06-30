@@ -50,7 +50,7 @@
                     </form>
                     <form action="Controleur" method="Get">
                         <input type="hidden" name="Iban" value="${compte.iban}">
-                        <input type="submit" name="Operation" value="Effectuer un virement">
+                        <input type="submit" name="Operation" value="Effectuer une opération">
                     </form>
                     <form action="Controleur" method="Post">
                         <input type="hidden" name="Iban" value="${compte.iban}">
@@ -84,6 +84,7 @@
                     </c:choose>
                 </p>
                 <p>Date : ${operation.date}</p>
+                <p>Libellé : ${operation.libelle}</p>
                 <p>Montant : ${operation.montant}</p>
                 <c:choose>
                     <c:when test="${operation.source != null}">

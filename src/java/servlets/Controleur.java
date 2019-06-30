@@ -75,8 +75,8 @@ public class Controleur extends HttpServlet {
             case "Dernieres operations" :
                 pageDernieresOperations(request, response);
             break;
-            case "Effectuer un virement" :
-                pageVirement(request, response);
+            case "Effectuer une opération" :
+                pageOperation(request, response);
             break;
             case "Obtenir un RIB" :
                 pageRib(request, response);
@@ -190,7 +190,7 @@ public class Controleur extends HttpServlet {
             request.setAttribute("compte", new BeanCompte(this.verifierIbanConseiller(request, response, iban), "Conseiller"));
         request.getRequestDispatcher("dernieresOperations.jsp").forward(request,response);
     }
-    private void pageVirement(HttpServletRequest request, HttpServletResponse response)
+    private void pageOperation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         verifierConnection(request, response);
         String iban = request.getParameter("Iban");

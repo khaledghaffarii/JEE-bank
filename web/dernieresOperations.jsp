@@ -61,6 +61,7 @@
                     </c:choose>
                 </p>
                 <p>Date : ${operation.date}</p>
+                <p>Libellé : ${operation.libelle}</p>
                 <p>Montant : ${operation.montant}</p>
                 <c:choose>
                     <c:when test="${operation.source != null && operation.destinataire == compte.compte}">

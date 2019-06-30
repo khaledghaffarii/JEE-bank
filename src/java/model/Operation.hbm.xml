@@ -20,6 +20,9 @@
         <property name="montant" type="double">
             <column name="MONTANT" precision="52" scale="0" not-null="true" />
         </property>
+        <property name="libelle" type="string">
+            <column name="LIBELLE" length="100" not-null="true" />
+        </property>
         <many-to-one entity-name="model.Compte">
             <column name="source" not-null="false" />
         </many-to-one>

@@ -33,7 +33,7 @@
                 </form>
                 <form action="Controleur" method="Get">
                     <input type="hidden" name="Iban" value="${compte.iban}">
-                    <input type="submit" name="Operation" value="Effectuer un virement">
+                    <input type="submit" name="Operation" value="Effectuer une opération">
                 </form>
                 <form action="Controleur" method="Get">
                     <input type="hidden" name="Iban" value="${compte.iban}">

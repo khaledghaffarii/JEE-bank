@@ -77,20 +77,24 @@ public class ClientService {
         Operation c1op1 = new Operation();
         c1op1.setDate(new Date());
         c1op1.setMontant(10.);
+        c1op1.setLibelle("Operation 1, dépôt");
         c1op1.setDestinataire(c1); // dépôt
         Operation c1op2 = new Operation();
         c1op2.setDate(new Date());
         c1op2.setMontant(20.);
+        c1op2.setLibelle("Operation 2, retrait");
         c1op2.setSource(c1); // retrait
         Operation c1op3 = new Operation();
         c1op3.setDate(new Date());
         c1op3.setMontant(30.);
         c1op3.setSource(c1);
+        c1op3.setLibelle("Operation 3, sortant");
         c1op3.setDestinataire(c3); // virement sortant
         Operation clop4 = new Operation();
         clop4.setDate(new Date());
         clop4.setMontant(40.);
         clop4.setSource(c3);
+        clop4.setLibelle("Operation 4, entrant");
         clop4.setDestinataire(c1); // virement entrant
         
         // Entrées et sorties
