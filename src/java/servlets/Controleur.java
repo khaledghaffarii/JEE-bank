@@ -75,7 +75,7 @@ public class Controleur extends HttpServlet {
             case "Dernieres operations" :
                 pageDernieresOperations(request, response);
             break;
-            case "Effectuer une opération" :
+            case "Effectuer une operation" :
                 pageOperation(request, response);
             break;
             case "Obtenir un RIB" :
@@ -121,6 +121,9 @@ public class Controleur extends HttpServlet {
             case "Supprimer le compte" :
                 actionSupprimerCompte(request, response);
             break;
+            case "Enregistrer une operation" :
+                actionEnregistrerOperation(request, response);
+            break;
             default:
                 erreur(request, response, "Opération post inconnue : " + request.getParameter("Operation"));
             break;
@@ -145,7 +148,7 @@ public class Controleur extends HttpServlet {
         //TODO Recherche du compte
         System.out.println("TODO: rechercher le compte dans la BDD");
         //test
-        Client client = clientService.findByClientid(43);
+        Client client = clientService.trouverParClientid(43);
         Conseiller conseiller = client.getConseiller();
         
         // Ici, on décide si on veut tester la vue Client ou Conseiller
@@ -182,7 +185,10 @@ public class Controleur extends HttpServlet {
         String iban = request.getParameter("Iban");
         if (iban == null || "".equals(iban))
             erreur(request, response, "Il faut un IBAN pour consulter un compte.");
-        
+        pageDernieresOperations(request, response, iban);
+    }
+    private void pageDernieresOperations(HttpServletRequest request, HttpServletResponse response, String iban)
+            throws ServletException, IOException {
         //récupération du compte parmi les comptes de l'utilisateur.
         if (this.utilisateur != null && this.utilisateur instanceof Client)
             request.setAttribute("compte", new BeanCompte(verifierIbanClient(request, response, iban), "Client"));
@@ -200,9 +206,11 @@ public class Controleur extends HttpServlet {
             request.setAttribute("compte", new BeanCompte(verifierIbanClient(request, response, iban), "Client"));
         else if (this.utilisateur instanceof Conseiller)
             request.setAttribute("compte", new BeanCompte(verifierIbanConseiller(request, response, iban), "Conseiller"));
-        else
+        else {
             erreur(request, response, "Vous devez être un client ou un conseiller pour voir cette page.");
-        request.getRequestDispatcher("pageVirement.jsp").forward(request,response);
+            return;
+        }
+        request.getRequestDispatcher("pageOperation.jsp").forward(request,response);
     }// </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Vues client. Click on the + sign on the left to edit the code.">
@@ -246,7 +254,7 @@ public class Controleur extends HttpServlet {
     private void pageDetailsClient(HttpServletRequest request, HttpServletResponse response,
             int clientId, String clientIdString) throws ServletException, IOException {
         
-        Client client = clientId != -1 ? clientService.findByClientid(clientId) : null;
+        Client client = clientId != -1 ? clientService.trouverParClientid(clientId) : null;
         if (client == null)
             erreur(request, response, "Aucun client n'a été trouvé pour l'identifiant " + clientIdString);
         verifierClientDuConseiller(request, response, client);
@@ -314,6 +322,37 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request,response);
         }
     }
+    private void verifierCompteUtilisateur(HttpServletRequest request, HttpServletResponse response, Compte compte)
+            throws ServletException, IOException {
+        String iban = compte.getIban();
+        if (iban == null) iban = "";
+        
+        Iterator<Client> clients;
+        if (this.utilisateur instanceof Client) {
+            HashSet<Client> clientsSet = new HashSet<Client>();
+            clientsSet.add((Client) this.utilisateur);
+            clients = clientsSet.iterator();
+        }
+        else if (this.utilisateur instanceof Conseiller)
+            clients = ((Conseiller) this.utilisateur).getClients().iterator();
+        else {
+            erreur(request, response, "Vous devez être un client ou un conseiller pour voir cette page.");
+            return;
+        }
+       
+       boolean found = false;
+       while (!found && clients.hasNext()) {
+           Iterator<Compte> comptes = clients.next().getComptes().iterator();
+           while (!found && comptes.hasNext()) {
+               found = iban.equals(comptes.next().getIban());
+           }
+       }
+       
+        if(!found) {
+            request.setAttribute("erreur", "Vous n'avez pas les droits sur le compte " + compte.getIban() + ".");
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+        }
+    }
     private void verifierConnection(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (this.utilisateur == null){
@@ -377,6 +416,72 @@ public class Controleur extends HttpServlet {
         } catch (NumberFormatException e) {
             pageListeClients(request, response);
         }
+    }
+    private void actionEnregistrerOperation(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String type = request.getParameter("type");
+        String libelle = request.getParameter("libelle");
+        String ibanSource = request.getParameter("source");
+        String ibanDestination = request.getParameter("destination");
+        String iban = request.getParameter("Compte concerne");
+        Compte compte = this.utilisateur instanceof Client ?
+                verifierIbanClient(request, response, iban):
+                verifierIbanConseiller(request, response, iban);
+        Compte source = (ibanSource == null || "".equals(ibanSource)) ?
+                null : compteService.trouverParIban(ibanSource);
+        Compte destination = (ibanDestination == null || "".equals(ibanDestination)) ?
+                null : compteService.trouverParIban(ibanDestination);
+        
+        // Vérifications
+        verifierCompteUtilisateur(request, response, compte);
+        if ("Depot".equals(type)) {
+            source = null;
+            destination = compte;
+        }
+        else if ("Retrait".equals(type)) {
+            source = compte;
+            destination = null;
+        }
+        else if ("Virement entrant".equals(type)) {
+            destination = null;
+            if (source == null) {
+                erreur(request, response, "Un virement entrant doit avoir une source.");
+                return;
+            }
+        }
+        else if ("Virement sortant".equals(type)) {
+            source = null;
+            if (destination == null) {
+                erreur(request, response, "Un virement sortant doit avoir un destinataire.");
+                return;
+            }
+        }
+        else {
+                erreur(request, response, "Le type de l'opération est inconnu.");
+                return;
+            }
+        
+        // Réalisation de l'opération.
+        try {
+            Double montant = Double.parseDouble(request.getParameter("montant"));
+            
+            Operation op = new Operation();
+            op.setDate(new Date());
+            op.setLibelle(libelle);
+            op.setMontant(montant);
+            op.setSource(source);
+            op.setDestinataire(destination);
+            
+            System.out.println("TODO: Créer une opération.");
+            pageDernieresOperations(request, response, iban);
+            return;
+        } catch (NumberFormatException e) {
+            erreur(request, response, "Le montant n'a pas pu être analysé.");
+        }
+        
+        //TODO : vérifier les droits (client / conseiller)
+        
+        //TODO : créer les opérations en fonction de leur type
     }
     // </editor-fold>
 }

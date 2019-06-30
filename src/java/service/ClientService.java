@@ -26,7 +26,7 @@ public class ClientService {
         return instance;
     }
     
-    public Client findByClientid(int clientId) {
+    public Client trouverParClientid(int clientId) {
         //TODO: interroger la BDD
         System.out.println("TODO: ClientService > findByClient -> interroger la BDD");
         

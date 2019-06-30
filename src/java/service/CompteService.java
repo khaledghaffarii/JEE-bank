@@ -26,9 +26,17 @@ public class CompteService {
         }
         return instance;
     }
+    
+    public Compte trouverParIban(String iban) {
+        System.out.println("TODO: trouver un compte à partir de son iban.");
+        Compte compte = new Compte();
+        compte.setIban(iban);
+        compte.setSolde(0.);
+        return compte;
+    }
 
     public void creerCompte(int soldeInitial, Set<Client> proprietaires) { // PAramètres ?
-        System.out.println("TODO: création du compte");
+        System.out.println("TODO: création du compte. Ajuster les paramètres.");
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     public void supprimerCompte(Compte compte) {

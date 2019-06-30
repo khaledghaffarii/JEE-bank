@@ -32,8 +32,9 @@
                     <input type="submit" value="Afficher les dernières opérations">
                 </form>
                 <form action="Controleur" method="Get">
+                    <input type="hidden" name="Operation" value="Effectuer une operation">
                     <input type="hidden" name="Iban" value="${compte.iban}">
-                    <input type="submit" name="Operation" value="Effectuer une opération">
+                    <input type="submit" value="Effectuer une opération">
                 </form>
                 <form action="Controleur" method="Get">
                     <input type="hidden" name="Iban" value="${compte.iban}">
