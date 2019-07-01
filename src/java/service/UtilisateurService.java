@@ -41,24 +41,10 @@ public class UtilisateurService {
             
             if (utilisateurs.isEmpty())
                 throw new NotFoundException("Aucun compte n'a été trouvé.");
-            if (utilisateurs.size() != 1)
-                throw new DuplicateEntryException("Plusieurs comptes ont été trouvés.");
-            
-            Conseiller conseiller = (Conseiller) utilisateurs.get(0);
-            //forcer le chargement des comptes des clients
-            for (Client client : conseiller.getClients())
-                client.getComptes().size();
-            return conseiller;
         }
-        else {
-            if (utilisateurs.size() != 1)
-                throw new DuplicateEntryException("Plusieurs comptes ont été trouvés.");
-            
-            //forcer le chargement des comptes du client
-            Client client = (Client) utilisateurs.get(0);
-            client.getComptes().size();
-System.out.println("Client a " + client.getComptes().size() + " comptes");
-            return client;
-        }
+        if (utilisateurs.size() != 1)
+            throw new DuplicateEntryException("Plusieurs comptes ont été trouvés.");
+
+        return (Utilisateur) utilisateurs.get(0);
     }
 }

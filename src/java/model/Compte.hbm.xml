@@ -13,20 +13,20 @@
         </property>
         <set name="clients" table="CLIENTCOMPTE" 
 				lazy="false" fetch="select" cascade="all">
-            <key column="IDCLIENT"/>
-            <many-to-many class="model.Client" column="IBANCOMPTE" />
+            <key column="IBANCOMPTE"/>
+            <many-to-many class="model.Client" column="IDCLIENT" />
         </set>
         <set name="entrees" table="OPERATION" 
 				inverse="true" lazy="false" fetch="select">
             <key>
-                <column name="source" not-null="false" />
+                <column name="IBANSOURCE" not-null="false" />
             </key>
             <one-to-many class="model.Operation" />
         </set>
         <set name="sorties" table="OPERATION" 
 				inverse="true" lazy="false" fetch="select">
             <key>
-                <column name="destinataire" not-null="false" />
+                <column name="IBANDESTINATAIRE" not-null="false" />
             </key>
             <one-to-many class="model.Operation" />
         </set>
