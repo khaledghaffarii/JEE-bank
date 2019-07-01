@@ -128,4 +128,8 @@ public class ClientService {
     public void creerClient(String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
         System.out.println("TODO: création du client");
     }
+
+    public void modifierClient(Client client, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
+        System.out.println("TODO: modification du client");
+    }
 }

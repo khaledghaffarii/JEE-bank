@@ -20,6 +20,10 @@
             <input type="hidden" value="Se deconnecter" name="Operation" hidden />
             <input type="submit" value="Se déconnecter" />
         </form>
+        <form action="Controleur" method="GET">
+            <input type="hidden" name="Operation" value="Modifier un client" hidden />
+            <input type="submit" value="Modifier mes informations" />
+        </form>
         <p>Bienvenue ${client.client.nom} ${client.client.prenom}</p>
         <h2>Mes comptes</h2>
         <c:forEach items="${client.client.comptes}" var="compte">

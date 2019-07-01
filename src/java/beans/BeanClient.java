@@ -14,16 +14,29 @@ import model.*;
  */
 public class BeanClient implements Serializable {
     protected Client client; //TODO: change from object
-    
+    protected String clientType;
+
     public BeanClient() { }
     public BeanClient(Client client) {
         this.client = client;
+        this.clientType = "";
     }
+    public BeanClient(Client client, String clientType) {
+        this.client = client;
+        this.clientType = clientType;
+    }
+    
     
     public Client getClient() {
         return client;
     }
     public void setClient(Client client) {
         this.client = client;
+    }
+    public String getClientType() {
+        return clientType;
+    }
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
 }

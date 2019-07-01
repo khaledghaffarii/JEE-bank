@@ -91,6 +91,9 @@ public class Controleur extends HttpServlet {
             case "Ajouter un client" :
                 pageNouveauClient(request, response);
             break;
+            case "Modifier un client" :
+                pageModifierClient(request, response);
+            break;
             default:
                 erreur(request, response, "Opération get inconnue : " + request.getParameter("Operation"));
             break;
@@ -117,6 +120,9 @@ public class Controleur extends HttpServlet {
             break;
             case "Nouveau client" :
                 actionCreerClient(request, response);
+            break;
+            case "Modifier client" :
+                actionModifierClient(request, response);
             break;
             case "Supprimer le compte" :
                 actionSupprimerCompte(request, response);
@@ -211,6 +217,30 @@ public class Controleur extends HttpServlet {
             return;
         }
         request.getRequestDispatcher("pageOperation.jsp").forward(request,response);
+    }
+    private void pageModifierClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Client client;
+        if (this.utilisateur instanceof Client) {
+            client = (Client) this.utilisateur;
+        }
+        else if (this.utilisateur instanceof Conseiller) {
+            try {
+                client = ClientService.instance().trouverParClientid(
+                    Integer.parseInt(request.getParameter("IdClient")));
+                verifierClientDuConseiller(request, response, client);
+            } catch (NumberFormatException e) {
+                erreur(request, response, "Un conseiller ne peut modifier un client que si l'identifiant du client est renseigné.");
+                return;
+            }
+        }
+        else {
+            erreur(request, response, "Vous devez être un client ou un conseiller pour pouvoir modifier un compte client.");
+            return;
+        }
+        
+        request.setAttribute("client", new BeanClient(client, (this.utilisateur instanceof Client) ? "Client" : "Conseiller"));
+        request.getRequestDispatcher("modifierClient.jsp").forward(request, response);
     }// </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Vues client. Click on the + sign on the left to edit the code.">
@@ -478,10 +508,42 @@ public class Controleur extends HttpServlet {
         } catch (NumberFormatException e) {
             erreur(request, response, "Le montant n'a pas pu être analysé.");
         }
+    }
+    private void actionModifierClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Client client;
+        if (this.utilisateur instanceof Client) {
+            client = (Client) this.utilisateur;
+        }
+        else if (this.utilisateur instanceof Conseiller) {
+            try {
+                client = ClientService.instance().trouverParClientid(
+                    Integer.parseInt(request.getParameter("IdClient")));
+                verifierClientDuConseiller(request, response, client);
+            } catch (NumberFormatException e) {
+                erreur(request, response, "Un conseiller ne peut modifier un client que si l'identifiant du client est renseigné.");
+                return;
+            }
+        }
+        else {
+            erreur(request, response, "Vous devez être un client ou un conseiller pour pouvoir modifier un compte client.");
+            return;
+        }
         
-        //TODO : vérifier les droits (client / conseiller)
+        String login = request.getParameter("login");
+        String mdp = request.getParameter("mdp");
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String adresse = request.getParameter("adresse");
+        String telephone = request.getParameter("telephone");
+        String mail = request.getParameter("mail");
         
-        //TODO : créer les opérations en fonction de leur type
+        clientService.modifierClient(client, login, mdp, nom, prenom, adresse, telephone, mail);
+        
+        if (this.utilisateur instanceof Conseiller)
+            pageDetailsClient(request, response, client.getIdclient(), (new Integer(client.getIdclient())).toString());
+        else
+            pageAccueil(request, response);
     }
     // </editor-fold>
 }

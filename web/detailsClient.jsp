@@ -17,16 +17,21 @@
     <body>
         <h1>Crédit Gratuit</h1>
         <form action="Controleur" method="GET">
-            <input type="hidden" value="Accueil" name="Operation" hidden />
+            <input type="hidden" name="Operation" value="Accueil" hidden />
             <input type="submit" value="Retour" />
         </form>
         <form action="Controleur" method="GET">
-            <input type="hidden" value="Mes clients" name="Operation" hidden />
+            <input type="hidden" name="Operation" value="Mes clients" hidden />
             <input type="submit" value="Liste des clients" />
         </form>
         <form action="Controleur" method="GET">
-            <input type="hidden" value="Ajouter un client" name="Operation" hidden />
+            <input type="hidden" name="Operation" value="Ajouter un client" hidden />
             <input type="submit" value="Ajouter un client" />
+        </form>
+        <form action="Controleur" method="GET">
+            <input type="hidden" name="IdClient" value="${client.client.idclient}" hidden />
+            <input type="hidden" name="Operation" value="Modifier un client" hidden />
+            <input type="submit" value="Modifier les informations du client" />
         </form>
         <h2>Détails du client ${client.client.nom} ${client.client.prenom}</h2>
         <div>
