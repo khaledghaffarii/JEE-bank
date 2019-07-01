@@ -48,10 +48,10 @@ Contributor(s):
     <property name="hibernate.connection.password">bank</property>
     <mapping resource="model/Message.hbm.xml"/>
     <mapping resource="model/Agence.hbm.xml"/>
-    <mapping resource="model/Compte.hbm.xml"/>
-    <mapping resource="model/Conseiller.hbm.xml"/>
-    <mapping resource="model/Clientcompte.hbm.xml"/>
     <mapping resource="model/Client.hbm.xml"/>
+    <mapping resource="model/Conseiller.hbm.xml"/>
+    <mapping resource="model/Compte.hbm.xml"/>
     <mapping resource="model/Operation.hbm.xml"/>
+<!--    <mapping resource="model/Clientcompte.hbm.xml"/> -->
   </session-factory>
 </hibernate-configuration>

@@ -8,12 +8,6 @@
             <column name="IDOPERATION" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="source" class="modele.Compte">
-            <column name="IBANSOURCE" length="50" />
-        </many-to-one>
-        <many-to-one name="destinataire" class="modele.Compte">
-            <column name="IBANDESTINATAIRE" length="50" />
-        </many-to-one>
         <property name="date" type="date">
             <column name="DATE" length="10" not-null="true" />
         </property>
@@ -23,11 +17,11 @@
         <property name="libelle" type="string">
             <column name="LIBELLE" length="100" not-null="true" />
         </property>
-        <many-to-one entity-name="model.Compte">
-            <column name="source" not-null="false" />
+        <many-to-one name="source" entity-name="model.Compte">
+            <column name="IBANSOURCE" not-null="false" />
         </many-to-one>
-        <many-to-one entity-name="model.Compte">
-            <column name="destinataire" not-null="false" />
+        <many-to-one name="destinataire" entity-name="model.Compte">
+            <column name="IBANDESTINATAIRE" not-null="false" />
         </many-to-one>
     </class>
 </hibernate-mapping>

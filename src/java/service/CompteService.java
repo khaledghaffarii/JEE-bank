@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import model.*;
+import org.hibernate.Session;
 
 /**
  *
@@ -27,7 +28,7 @@ public class CompteService {
         return instance;
     }
     
-    public Compte trouverParIban(String iban) {
+    public Compte trouverParIban(Session session, String iban) {
         System.out.println("TODO: trouver un compte à partir de son iban.");
         Compte compte = new Compte();
         compte.setIban(iban);
@@ -35,11 +36,11 @@ public class CompteService {
         return compte;
     }
 
-    public void creerCompte(int soldeInitial, Set<Client> proprietaires) { // PAramètres ?
+    public void creerCompte(Session session, int soldeInitial, Set<Client> proprietaires) { // PAramètres ?
         System.out.println("TODO: création du compte. Ajuster les paramètres.");
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public void supprimerCompte(Compte compte) {
+    public void supprimerCompte(Session session, Compte compte) {
         if (compte.getSolde() != 0.)
             throw new InvalidParameterException("Le solde du compte doit être nul.");
         System.out.println("TODO: suppression du compte");

@@ -8,20 +8,22 @@
             <column name="IBAN" length="50" />
             <generator class="assigned" />
         </id>
-        <many-to-many entity-name="model.Client">
-            <column name="clients" not-null="true" />
-        </many-to-many>
         <property name="solde" type="double">
             <column name="SOLDE" precision="52" scale="0" not-null="true" />
         </property>
-        <set name="entrees" table="model.Operation" 
+        <set name="clients" table="CLIENTCOMPTE" 
+				lazy="false" fetch="select" cascade="all">
+            <key column="idClient"/>
+            <many-to-many class="model.Client" column="ibanCompte" />
+        </set>
+        <set name="entrees" table="OPERATION" 
 				inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="source" not-null="false" />
             </key>
             <one-to-many class="model.Operation" />
         </set>
-        <set name="sorties" table="model.Operation" 
+        <set name="sorties" table="OPERATION" 
 				inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="destinataire" not-null="false" />

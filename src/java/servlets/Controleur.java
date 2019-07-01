@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.*;
+import org.hibernate.Session;
 import service.*;
 
 /**
@@ -28,11 +29,14 @@ public class Controleur extends HttpServlet {
     // Tableau tab;// un javabean
 //    Session bddSession;
     Utilisateur utilisateur;
+    Session session;
+    
     ClientService clientService;
     CompteService compteService;
     public void init(){
 //        this.bddSession = Hibernate.instance().getSession();
         this.utilisateur = null;
+        this.session = HibernateUtil.getSessionFactory().openSession();
         this.clientService = ClientService.instance();
         this.compteService = CompteService.instance();
     }
@@ -154,7 +158,7 @@ public class Controleur extends HttpServlet {
         //TODO Recherche du compte
         System.out.println("TODO: rechercher le compte dans la BDD");
         //test
-        Client client = clientService.trouverParClientid(43);
+        Client client = clientService.trouverParClientid(this.session, 43);
         Conseiller conseiller = client.getConseiller();
         
         // Ici, on décide si on veut tester la vue Client ou Conseiller
@@ -226,7 +230,7 @@ public class Controleur extends HttpServlet {
         }
         else if (this.utilisateur instanceof Conseiller) {
             try {
-                client = ClientService.instance().trouverParClientid(
+                client = ClientService.instance().trouverParClientid(this.session,
                     Integer.parseInt(request.getParameter("IdClient")));
                 verifierClientDuConseiller(request, response, client);
             } catch (NumberFormatException e) {
@@ -284,7 +288,8 @@ public class Controleur extends HttpServlet {
     private void pageDetailsClient(HttpServletRequest request, HttpServletResponse response,
             int clientId, String clientIdString) throws ServletException, IOException {
         
-        Client client = clientId != -1 ? clientService.trouverParClientid(clientId) : null;
+        Client client = clientId != -1 ?
+                clientService.trouverParClientid(this.session, clientId) : null;
         if (client == null)
             erreur(request, response, "Aucun client n'a été trouvé pour l'identifiant " + clientIdString);
         verifierClientDuConseiller(request, response, client);
@@ -419,7 +424,7 @@ public class Controleur extends HttpServlet {
         String telephone = request.getParameter("telephone");
         String mail = request.getParameter("mail");
         
-        clientService.creerClient(login, mdp, nom, prenom, adresse, telephone, mail);
+        clientService.creerClient(this.session, login, mdp, nom, prenom, adresse, telephone, mail);
         
         pageAccueil(request, response);
     }
@@ -432,7 +437,7 @@ public class Controleur extends HttpServlet {
 
         // Suppression du compte
         try {
-            compteService.supprimerCompte(compte);
+            compteService.supprimerCompte(this.session, compte);
         } catch (InvalidParameterException e) {
             erreur(request, response, e.getMessage());
         }
@@ -458,9 +463,9 @@ public class Controleur extends HttpServlet {
                 verifierIbanClient(request, response, iban):
                 verifierIbanConseiller(request, response, iban);
         Compte source = (ibanSource == null || "".equals(ibanSource)) ?
-                null : compteService.trouverParIban(ibanSource);
+                null : compteService.trouverParIban(this.session, ibanSource);
         Compte destination = (ibanDestination == null || "".equals(ibanDestination)) ?
-                null : compteService.trouverParIban(ibanDestination);
+                null : compteService.trouverParIban(this.session, ibanDestination);
         
         // Vérifications
         verifierCompteUtilisateur(request, response, compte);
@@ -517,7 +522,7 @@ public class Controleur extends HttpServlet {
         }
         else if (this.utilisateur instanceof Conseiller) {
             try {
-                client = ClientService.instance().trouverParClientid(
+                client = ClientService.instance().trouverParClientid(this.session,
                     Integer.parseInt(request.getParameter("IdClient")));
                 verifierClientDuConseiller(request, response, client);
             } catch (NumberFormatException e) {
@@ -538,7 +543,7 @@ public class Controleur extends HttpServlet {
         String telephone = request.getParameter("telephone");
         String mail = request.getParameter("mail");
         
-        clientService.modifierClient(client, login, mdp, nom, prenom, adresse, telephone, mail);
+        clientService.modifierClient(this.session, client, login, mdp, nom, prenom, adresse, telephone, mail);
         
         if (this.utilisateur instanceof Conseiller)
             pageDetailsClient(request, response, client.getIdclient(), (new Integer(client.getIdclient())).toString());

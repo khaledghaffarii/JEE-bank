@@ -29,13 +29,13 @@
         <property name="mail" type="string">
             <column name="MAIL" length="100" not-null="true" />
         </property>
-        <many-to-one name="agence" type="int">
+        <many-to-one name="agence" class="model.Agence">
             <column name="IDAGENCE" not-null="true" />
         </many-to-one>
         <set name="clients" table="model.Client" 
 				inverse="true" lazy="false" fetch="select">
             <key>
-                <column name="source" not-null="false" />
+                <column name="idConseiller" not-null="false" />
             </key>
             <one-to-many class="model.Client" />
         </set>

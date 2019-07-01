@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import model.*;
+import org.hibernate.Session;
 
 /**
  *
@@ -26,7 +27,7 @@ public class ClientService {
         return instance;
     }
     
-    public Client trouverParClientid(int clientId) {
+    public Client trouverParClientid(Session session, int clientId) {
         //TODO: interroger la BDD
         System.out.println("TODO: ClientService > findByClient -> interroger la BDD");
         
@@ -125,11 +126,11 @@ public class ClientService {
         return client;
     }
 
-    public void creerClient(String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
+    public void creerClient(Session session, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
         System.out.println("TODO: création du client");
     }
 
-    public void modifierClient(Client client, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
+    public void modifierClient(Session session, Client client, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
         System.out.println("TODO: modification du client");
     }
 }
