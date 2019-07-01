@@ -39,7 +39,7 @@ create table bank.message(
 );
 
 create table bank.compte(
-    iban      		varchar(50)     PRIMARY KEY		NOT NULL,
+    ibanCompte      		varchar(50)     PRIMARY KEY		NOT NULL,
     solde     		double     	  	NOT NULL
 );
 
@@ -83,16 +83,16 @@ FOREIGN KEY (idClient) REFERENCES bank.client(idClient);
 
 ALTER TABLE bank.clientCompte
 ADD CONSTRAINT FK_ClientcompteCompte
-FOREIGN KEY (ibanCompte) REFERENCES bank.compte(iban);
+FOREIGN KEY (ibanCompte) REFERENCES bank.compte(ibanCompte);
 
 ALTER TABLE bank.operation
 ADD CONSTRAINT FK_OperationCompteIbSrc
-FOREIGN KEY (ibanSource) REFERENCES bank.compte(iban);
+FOREIGN KEY (ibanSource) REFERENCES bank.compte(ibanCompte);
 
 ALTER TABLE bank.operation
 ADD CONSTRAINT FK_OperationDestinataire
-FOREIGN KEY (ibanDestinataire) REFERENCES bank.compte(iban);
+FOREIGN KEY (ibanDestinataire) REFERENCES bank.compte(ibanCompte);
 
 ALTER TABLE bank.operation
 ADD CONSTRAINT FK_OperationSource
-FOREIGN KEY (ibanSource) REFERENCES bank.compte(iban);
+FOREIGN KEY (ibanSource) REFERENCES bank.compte(ibanCompte);

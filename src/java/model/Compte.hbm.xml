@@ -5,7 +5,7 @@
 <hibernate-mapping>
     <class name="model.Compte" table="COMPTE" schema="BANK" optimistic-lock="version">
         <id name="iban" type="string">
-            <column name="IBAN" length="50" />
+            <column name="IBANCOMPTE" length="50" />
             <generator class="assigned" />
         </id>
         <property name="solde" type="double">
@@ -13,8 +13,8 @@
         </property>
         <set name="clients" table="CLIENTCOMPTE" 
 				lazy="false" fetch="select" cascade="all">
-            <key column="idClient"/>
-            <many-to-many class="model.Client" column="ibanCompte" />
+            <key column="IDCLIENT"/>
+            <many-to-many class="model.Client" column="IBANCOMPTE" />
         </set>
         <set name="entrees" table="OPERATION" 
 				inverse="true" lazy="false" fetch="select">

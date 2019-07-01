@@ -37,8 +37,8 @@
         </many-to-one>
         <set name="comptes" table="CLIENTCOMPTE" 
 				lazy="false" fetch="select" cascade="all">
-            <key column="ibanCompte"/>
-            <many-to-many class="model.Client" column="idClient" />
+            <key column="IBANCOMPTE"/>
+            <many-to-many class="model.Client" column="IDCLIENT" />
         </set>
     </class>
 </hibernate-mapping>

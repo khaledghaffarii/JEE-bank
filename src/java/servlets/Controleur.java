@@ -12,10 +12,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.NotFoundException;
 import model.*;
 import org.hibernate.Session;
 import service.*;
@@ -33,12 +36,14 @@ public class Controleur extends HttpServlet {
     
     ClientService clientService;
     CompteService compteService;
+    UtilisateurService utilisateurService;
     public void init(){
 //        this.bddSession = Hibernate.instance().getSession();
         this.utilisateur = null;
         this.session = HibernateUtil.getSessionFactory().openSession();
         this.clientService = ClientService.instance();
         this.compteService = CompteService.instance();
+        this.utilisateurService = UtilisateurService.instance();
     }
 
     /**
@@ -152,24 +157,15 @@ public class Controleur extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Vues communes. Click on the + sign on the left to edit the code.">
     private void actionConnecter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        
-        //TODO Recherche du compte
-        System.out.println("TODO: rechercher le compte dans la BDD");
-        //test
-        Client client = clientService.trouverParClientid(this.session, 43);
-        Conseiller conseiller = client.getConseiller();
-        
-        // Ici, on décide si on veut tester la vue Client ou Conseiller
-        this.utilisateur = conseiller;
-        
-        if (this.utilisateur == null) {
+        try {
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
+            this.utilisateur = utilisateurService.trouverParLoginEtMotDePasse(session, login, password);
+            pageAccueil(request, response);
+        } catch (DuplicateEntryException | NotFoundException ex) {
             request.setAttribute("erreur", "L'authentification a échoué.");
             request.getRequestDispatcher("login.jsp").forward(request,response);
-            return;
         }
-        pageAccueil(request, response);
     }
     private void actionDeconnecter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.utilisateur = null;
