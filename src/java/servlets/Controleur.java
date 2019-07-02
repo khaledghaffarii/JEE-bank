@@ -349,8 +349,8 @@ public class Controleur extends HttpServlet {
         while (!found && clients.hasNext())
                 found = clients.next().getIdclient() == client.getIdclient();
         if(!found) {
-            request.setAttribute("erreur", "Cette personne ne fait pas partie de vos clients.");
-            request.getRequestDispatcher("login.jsp").forward(request,response);
+            request.setAttribute("erreur", new BeanErreur("Cette personne ne fait pas partie de vos clients.", "Accueil"));
+            request.getRequestDispatcher("erreur.jsp").forward(request,response);
         }
     }
     private void verifierCompteUtilisateur(HttpServletRequest request, HttpServletResponse response, Compte compte)
