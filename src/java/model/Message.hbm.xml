@@ -6,7 +6,7 @@
     <class name="model.Message" table="MESSAGE" schema="BANK" optimistic-lock="version">
         <id name="idmessage" type="int">
             <column name="IDMESSAGE" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <many-to-one name="client" class="model.Client">
             <column name="IDCLIENT" not-null="true" />

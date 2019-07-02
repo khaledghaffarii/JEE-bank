@@ -6,7 +6,7 @@
     <class name="model.Client" table="CLIENT" schema="BANK" optimistic-lock="version">
         <id name="idclient" type="int">
             <column name="IDCLIENT" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="login" type="string">
             <column name="LOGIN" length="20" not-null="true" unique="true" />

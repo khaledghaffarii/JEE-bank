@@ -56,7 +56,7 @@
                     <input type="text" name="mail" />
                 </div>
 
-                <input type="hidden" value="Modifier client" name="Operation" hidden />
+                <input type="hidden" value="Nouveau client" name="Operation" hidden />
                 <input type="submit" value="Enregistrer" />
             </form>
     </body>

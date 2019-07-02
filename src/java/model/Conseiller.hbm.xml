@@ -6,7 +6,7 @@
     <class name="model.Conseiller" table="CONSEILLER" schema="BANK" optimistic-lock="version">
         <id name="idconseiller" type="int">
             <column name="IDCONSEILLER" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="login" type="string">
             <column name="LOGIN" length="20" not-null="true" unique="true" />

@@ -27,6 +27,12 @@ public class Client extends Utilisateur {
        this.conseiller = conseiller;
        this.agence = agence;
     }
+    public Client(String login, String pwd, String nom, String prenom,
+            String adresse, String telephone, String mail, Conseiller conseiller, Agence agence) {
+       super(login, pwd, nom, prenom, adresse, telephone, mail);
+       this.conseiller = conseiller;
+       this.agence = agence;
+    }
    
     public int getIdclient() {
         return this.idclient;

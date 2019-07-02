@@ -1,5 +1,7 @@
 create table bank.agence(
-    idAgence  		int     		PRIMARY KEY		NOT NULL,
+    idAgence  		int     		PRIMARY KEY		NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 0, INCREMENT BY 1),
     nom		  		varchar(100)    NOT NULL,
     horaires  		varchar(500)    NOT NULL,
     telephone 		varchar(10)     NOT NULL,
@@ -7,7 +9,9 @@ create table bank.agence(
 );
 
 create table bank.client(
-	idClient  		int     		PRIMARY KEY		NOT NULL,
+	idClient  		int     		PRIMARY KEY		NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 0, INCREMENT BY 1),
 	login     		varchar(20)     UNIQUE			NOT NULL,
     pwd       		varchar(30)     NOT NULL,
 	nom       		varchar(30)     NOT NULL,
@@ -20,7 +24,9 @@ create table bank.client(
 );
 
 create table bank.conseiller(
-	idConseiller 	int     	  	PRIMARY KEY		NOT NULL,
+	idConseiller 	int     	  	PRIMARY KEY		NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 0, INCREMENT BY 1),
 	login     		varchar(20)     UNIQUE			NOT NULL,
     pwd       		varchar(30)     NOT NULL,
 	nom       		varchar(30)     NOT NULL,
@@ -32,7 +38,9 @@ create table bank.conseiller(
 );
 
 create table bank.message(
-	idMessage 		int     		PRIMARY KEY		NOT NULL,
+	idMessage 		int     		PRIMARY KEY		NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 0, INCREMENT BY 1),
 	idClient 		int     	  					NOT NULL,
     date      		date           	NOT NULL,
     contenu   		varchar(500)   	NOT NULL
@@ -44,7 +52,9 @@ create table bank.compte(
 );
 
 create table bank.operation(
-    idOperation 		int           	PRIMARY KEY		NOT NULL,
+    idOperation 		int           	PRIMARY KEY		NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 0, INCREMENT BY 1),
     ibanSource		 	varchar(50),
     ibanDestinataire 	varchar(50),
     dateOperation      			date          	NOT NULL,

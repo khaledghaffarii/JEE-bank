@@ -11,9 +11,6 @@ import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +41,9 @@ public class Controleur extends HttpServlet {
         this.clientService = ClientService.instance();
         this.compteService = CompteService.instance();
         this.utilisateurService = UtilisateurService.instance();
+    }
+    public void destroy() {
+        this.session.close();
     }
 
     /**
@@ -420,7 +420,8 @@ public class Controleur extends HttpServlet {
         String telephone = request.getParameter("telephone");
         String mail = request.getParameter("mail");
         
-        clientService.creerClient(this.session, login, mdp, nom, prenom, adresse, telephone, mail);
+        clientService.creerClient(this.session, login, mdp, nom, prenom, adresse, telephone, mail,
+                (Conseiller) this.utilisateur, ((Conseiller) this.utilisateur).getAgence());
         
         pageAccueil(request, response);
     }

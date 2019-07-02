@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.ws.rs.NotFoundException;
 import model.*;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -36,8 +37,26 @@ public class ClientService {
         return client;
     }
 
-    public void creerClient(Session session, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
-        System.out.println("TODO: création du client");
+    public void creerClient(Session session, String login, String mdp,
+            String nom, String prenom, String adresse, String telephone, String mail,
+            Conseiller conseiller, Agence agence) {
+        Client client = new Client(login, mdp, nom, prenom,
+            adresse, telephone, mail, conseiller, agence);
+        client.setComptes(new HashSet<Compte>());
+        conseiller.getClients().add(client);
+        Transaction transaction = session.beginTransaction();
+        try {
+            System.out.println("here1");
+            session.save(client);
+            System.out.println("here2");
+            transaction.commit();
+            System.out.println("here3");
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+        }
+        System.out.println("Created client " + client.getIdclient()
+                + " - " + client.getNom().toUpperCase() + " " + client.getPrenom());
     }
 
     public void modifierClient(Session session, Client client, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
