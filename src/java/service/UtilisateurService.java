@@ -28,22 +28,29 @@ public class UtilisateurService {
     }
     
     public Utilisateur trouverParLoginEtMotDePasse(Session session, String login, String mdp)
+            throws DuplicateEntryException, NotFoundException, BadAuthException {
+        if (login == null || mdp == null || "".equals(login))
+            return null;
+        Utilisateur utilisateur = trouverParLogin(session, login);
+        if (utilisateur != null && !mdp.equals(utilisateur.getLogin()))
+            throw new BadAuthException("Vous n'avez pas le bon mot de passe.");
+        return utilisateur;
+    }
+    public Utilisateur trouverParLogin(Session session, String login)
             throws DuplicateEntryException, NotFoundException {
-        Query qClients = session.createQuery("from Client where login = :login and pwd = :pwd");
+        Query qClients = session.createQuery("from Client where login = :login");
         qClients.setParameter("login", login);
-        qClients.setParameter("pwd", mdp);
         List utilisateurs = qClients.list();
         if (utilisateurs.isEmpty()) {
-            Query qConseillers = session.createQuery("from Conseiller where login = :login and pwd = :pwd");
+            Query qConseillers = session.createQuery("from Conseiller where login = :login");
             qConseillers.setParameter("login", login);
-            qConseillers.setParameter("pwd", mdp);
             utilisateurs = qConseillers.list();
             
             if (utilisateurs.isEmpty())
-                throw new NotFoundException("Aucun compte n'a été trouvé.");
+                return null;
         }
         if (utilisateurs.size() != 1)
-            throw new DuplicateEntryException("Plusieurs comptes ont été trouvés.");
+            throw new DuplicateEntryException("Plusieurs comptes ont été trouvés pour ce login. Veuillez contacter un administrateur.");
 
         return (Utilisateur) utilisateurs.get(0);
     }

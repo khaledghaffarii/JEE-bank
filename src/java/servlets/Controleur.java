@@ -11,6 +11,8 @@ import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -162,7 +164,7 @@ public class Controleur extends HttpServlet {
             String password = request.getParameter("password");
             this.utilisateur = utilisateurService.trouverParLoginEtMotDePasse(session, login, password);
             pageAccueil(request, response);
-        } catch (DuplicateEntryException | NotFoundException ex) {
+        } catch (DuplicateEntryException | BadAuthException | NotFoundException ex) {
             request.setAttribute("erreur", "L'authentification a échoué.");
             request.getRequestDispatcher("login.jsp").forward(request,response);
         }
@@ -420,8 +422,13 @@ public class Controleur extends HttpServlet {
         String telephone = request.getParameter("telephone");
         String mail = request.getParameter("mail");
         
-        clientService.creerClient(this.session, login, mdp, nom, prenom, adresse, telephone, mail,
-                (Conseiller) this.utilisateur, ((Conseiller) this.utilisateur).getAgence());
+        try {
+            clientService.creerClient(this.session, login, mdp, nom, prenom, adresse, telephone, mail,
+                    (Conseiller) this.utilisateur, ((Conseiller) this.utilisateur).getAgence());
+        } catch (DuplicateEntryException ex) {
+            erreur(request, response, ex.getMessage());
+            return;
+        }
         
         pageAccueil(request, response);
     }

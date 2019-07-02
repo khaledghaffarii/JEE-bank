@@ -19,7 +19,10 @@ import org.hibernate.Transaction;
  */
 public class ClientService {
     private static ClientService instance;
-    private ClientService() {}
+    private UtilisateurService utilisateurService;
+    private ClientService() {
+        this.utilisateurService = UtilisateurService.instance();
+    }
     public static ClientService instance() {
         if (instance == null) {
             synchronized(ClientService.class) {
@@ -39,7 +42,13 @@ public class ClientService {
 
     public void creerClient(Session session, String login, String mdp,
             String nom, String prenom, String adresse, String telephone, String mail,
-            Conseiller conseiller, Agence agence) {
+            Conseiller conseiller, Agence agence) throws DuplicateEntryException {
+        // Vérifier que le login n'existe pas déjà.
+        if (utilisateurService.trouverParLogin(session, login) != null)
+            throw new DuplicateEntryException("Ce login est déjà utilisé.");
+        
+        
+        // Création du client
         Client client = new Client(login, mdp, nom, prenom,
             adresse, telephone, mail, conseiller, agence);
         client.setComptes(new HashSet<Compte>());
