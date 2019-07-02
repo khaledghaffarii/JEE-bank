@@ -47,7 +47,7 @@ create table bank.operation(
     idOperation 		int           	PRIMARY KEY		NOT NULL,
     ibanSource		 	varchar(50),
     ibanDestinataire 	varchar(50),
-    date      			date          	NOT NULL,
+    dateOperation      			date          	NOT NULL,
 	montant   			double     	  	NOT NULL,
 	libelle				varchar(100)	NOT NULL
 );

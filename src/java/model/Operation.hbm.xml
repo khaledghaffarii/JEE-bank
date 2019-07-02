@@ -9,7 +9,7 @@
             <generator class="assigned" />
         </id>
         <property name="date" type="date">
-            <column name="DATE" length="10" not-null="true" />
+            <column name="DATEOPERATION" length="10" not-null="true" />
         </property>
         <property name="montant" type="double">
             <column name="MONTANT" precision="52" scale="0" not-null="true" />
