@@ -105,6 +105,9 @@ public class Controleur extends HttpServlet {
             case "Modifier un client" :
                 pageModifierClient(request, response);
             break;
+            case "Ouvrir un compte" :
+                pageOuvrirCompte(request, response);
+            break;
             default:
                 erreur(request, response, "Opération get inconnue : " + request.getParameter("Operation"));
             break;
@@ -134,6 +137,9 @@ public class Controleur extends HttpServlet {
             break;
             case "Modifier client" :
                 actionModifierClient(request, response);
+            break;
+            case "Ouvrir compte" :
+                actionOuvrirCompte(request, response);
             break;
             case "Supprimer le compte" :
                 actionSupprimerCompte(request, response);
@@ -243,6 +249,24 @@ public class Controleur extends HttpServlet {
         
         request.setAttribute("client", new BeanClient(client, (this.utilisateur instanceof Client) ? "Client" : "Conseiller"));
         request.getRequestDispatcher("modifierClient.jsp").forward(request, response);
+    }
+
+    private void pageOuvrirCompte(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (!(this.utilisateur instanceof Conseiller)) {
+            erreur(request, response, "Vous devez être un conseiller pour pouvoir ouvrir un compte client.");
+            return;
+        }
+        try {
+            Client client = ClientService.instance().trouverParClientid(this.session,
+                Integer.parseInt(request.getParameter("IdClient")));
+            verifierClientDuConseiller(request, response, client);
+            request.setAttribute("client", new BeanClient(client, (this.utilisateur instanceof Client) ? "Client" : "Conseiller"));
+            request.getRequestDispatcher("ouvrirCompte.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            erreur(request, response, "Un conseiller ne peut modifier un client que si l'identifiant du client est renseigné.");
+            return;
+        }
     }// </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Vues client. Click on the + sign on the left to edit the code.">
@@ -482,14 +506,14 @@ public class Controleur extends HttpServlet {
             destination = null;
         }
         else if ("Virement entrant".equals(type)) {
-            destination = null;
+            destination = compte;
             if (source == null) {
                 erreur(request, response, "Un virement entrant doit avoir une source.");
                 return;
             }
         }
         else if ("Virement sortant".equals(type)) {
-            source = null;
+            source = compte;
             if (destination == null) {
                 erreur(request, response, "Un virement sortant doit avoir un destinataire.");
                 return;
@@ -553,6 +577,32 @@ public class Controleur extends HttpServlet {
                 pageAccueil(request, response);
         } catch (DuplicateEntryException ex) {
             erreur(request, response, ex.getMessage());
+        }
+    }
+    private void actionOuvrirCompte(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (!(this.utilisateur instanceof Conseiller)) {
+            erreur(request, response, "Vous devez être un conseiller pour pouvoir ouvrir un compte client.");
+            return;
+        }
+        double montant;
+        try {
+            montant = Double.parseDouble(request.getParameter("montant"));
+        } catch (NumberFormatException e) {
+            erreur(request, response, "Le montant doit être renseigné.");
+            return;
+        }
+        try {
+            Client client = ClientService.instance().trouverParClientid(this.session,
+                Integer.parseInt(request.getParameter("IdClient")));
+            verifierClientDuConseiller(request, response, client);
+            HashSet<Client> clients = new HashSet<Client>();
+            clients.add(client);
+            compteService.creerCompte(session, clients, montant);
+            
+            pageDetailsClient(request, response, client.getIdclient(), (new Integer(client.getIdclient())).toString());
+        } catch (NumberFormatException e) {
+            erreur(request, response, "Un conseiller ne peut modifier un client que si l'identifiant du client est renseigné.");
         }
     }
     // </editor-fold>

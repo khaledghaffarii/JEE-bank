@@ -9,9 +9,10 @@
        uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+    <jsp:useBean id="client" class="beans.BeanClient" scope="request" />
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Nouveau Client</title>
+        <title>Modifier Client</title>
     </head>
     <body>
         <h1>Crédit Gratuit</h1>

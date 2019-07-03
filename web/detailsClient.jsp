@@ -33,6 +33,11 @@
             <input type="hidden" name="Operation" value="Modifier un client" hidden />
             <input type="submit" value="Modifier les informations du client" />
         </form>
+        <form action="Controleur" method="GET">
+            <input type="hidden" name="IdClient" value="${client.client.idclient}" hidden />
+            <input type="hidden" name="Operation" value="Ouvrir un compte" hidden />
+            <input type="submit" value="Ouvrir un compte" />
+        </form>
         <h2>Détails du client ${client.client.nom} ${client.client.prenom}</h2>
         <div>
             <p>Nom : ${client.client.nom}</p>

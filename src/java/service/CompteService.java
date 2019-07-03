@@ -21,7 +21,10 @@ import org.hibernate.Transaction;
  */
 public class CompteService {
     private static CompteService instance;
-    private CompteService() {}
+    private CompteService()
+    {
+        this.operationService = OperationService.instance();
+    }
     public static CompteService instance() {
         if (instance == null) {
             synchronized(CompteService.class) {
@@ -31,6 +34,7 @@ public class CompteService {
         return instance;
     }
     
+    private OperationService operationService;
     private static final String ibanCharacters = "ABCDEFGHIJKLMNOPQRSTUVWYZ0123456789";
     private static Random ibanGenerator = new Random();
     private String genererIban() {
@@ -47,8 +51,7 @@ public class CompteService {
         return compte;
     }
 
-    public void creerCompte(Session session, int soldeInitial, Set<Client> proprietaires,
-            double montantInitial) {
+    public void creerCompte(Session session, Set<Client> proprietaires, double montantInitial) {
         if (montantInitial < 50.)
             throw new IllegalArgumentException("Un compte ne peut être créé qu'avec un solde "
                     + "supérieur ou égal à 50€.");
@@ -57,9 +60,11 @@ public class CompteService {
         
         // Création du compte
         Compte compte = new Compte(genererIban(), 0.);
-        compte.setClients(proprietaires);
         compte.setEntrees(new HashSet<Operation>());
         compte.setSorties(new HashSet<Operation>());
+        compte.setClients(proprietaires);
+        for (Client client : proprietaires)
+            client.getComptes().add(compte);
         
         Transaction transaction = session.beginTransaction();
         try {
@@ -70,6 +75,8 @@ public class CompteService {
                 transaction.rollback();
         }
         System.out.println("Création du compte " + compte.getIban());
+        
+        operationService.creerOperation(session, new Date(), "Dépôt initial", montantInitial, null, compte);
     }
     public void cloturerCompte(Session session, Compte compte) {
         if (compte.getSolde() != 0.)
