@@ -47,7 +47,6 @@ public class ClientService {
         if (utilisateurService.trouverParLogin(session, login) != null)
             throw new DuplicateEntryException("Ce login est déjà utilisé.");
         
-        
         // Création du client
         Client client = new Client(login, mdp, nom, prenom,
             adresse, telephone, mail, conseiller, agence);
@@ -55,20 +54,42 @@ public class ClientService {
         conseiller.getClients().add(client);
         Transaction transaction = session.beginTransaction();
         try {
-            System.out.println("here1");
             session.save(client);
-            System.out.println("here2");
             transaction.commit();
-            System.out.println("here3");
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
         }
-        System.out.println("Created client " + client.getIdclient()
+        System.out.println("Création du client " + client.getIdclient()
                 + " - " + client.getNom().toUpperCase() + " " + client.getPrenom());
     }
 
-    public void modifierClient(Session session, Client client, String login, String mdp, String nom, String prenom, String adresse, String telephone, String mail) {
-        System.out.println("TODO: modification du client");
+    public void modifierClient(Session session, Client client,
+            String login, String mdp, String nom, String prenom,
+            String adresse, String telephone, String mail) throws DuplicateEntryException {
+        // Vérifier que le login n'existe pas déjà.
+        Utilisateur utilisateur = utilisateurService.trouverParLogin(session, login);
+        if (utilisateur != null && (!(utilisateur instanceof Client) ||
+                !((new Integer(((Client) utilisateur).getIdclient()).equals(client.getIdclient())))))
+            throw new DuplicateEntryException("Ce login est déjà utilisé.");
+        
+        // Mise à jour du client
+        client.setLogin(login);
+        client.setPwd(mdp);
+        client.setNom(nom);
+        client.setPrenom(prenom);
+        client.setAdresse(adresse);
+        client.setTelephone(telephone);
+        client.setMail(mail);
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.saveOrUpdate(client);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+        }
+        System.out.println("Mise à jour du client " + client.getIdclient()
+                + " - " + client.getNom().toUpperCase() + " " + client.getPrenom());
     }
 }

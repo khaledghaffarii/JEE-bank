@@ -165,7 +165,7 @@ public class Controleur extends HttpServlet {
             this.utilisateur = utilisateurService.trouverParLoginEtMotDePasse(session, login, password);
             pageAccueil(request, response);
         } catch (DuplicateEntryException | BadAuthException | NotFoundException ex) {
-            request.setAttribute("erreur", "L'authentification a échoué.");
+            request.setAttribute("erreur", "L'authentification a échoué : " + ex.getMessage());
             request.getRequestDispatcher("login.jsp").forward(request,response);
         }
     }
@@ -520,39 +520,43 @@ public class Controleur extends HttpServlet {
     }
     private void actionModifierClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Client client;
-        if (this.utilisateur instanceof Client) {
-            client = (Client) this.utilisateur;
-        }
-        else if (this.utilisateur instanceof Conseiller) {
-            try {
-                client = ClientService.instance().trouverParClientid(this.session,
-                    Integer.parseInt(request.getParameter("IdClient")));
-                verifierClientDuConseiller(request, response, client);
-            } catch (NumberFormatException e) {
-                erreur(request, response, "Un conseiller ne peut modifier un client que si l'identifiant du client est renseigné.");
+        try {
+            Client client;
+            if (this.utilisateur instanceof Client) {
+                client = (Client) this.utilisateur;
+            }
+            else if (this.utilisateur instanceof Conseiller) {
+                try {
+                    client = ClientService.instance().trouverParClientid(this.session,
+                            Integer.parseInt(request.getParameter("IdClient")));
+                    verifierClientDuConseiller(request, response, client);
+                } catch (NumberFormatException e) {
+                    erreur(request, response, "Un conseiller ne peut modifier un client que si l'identifiant du client est renseigné.");
+                    return;
+                }
+            }
+            else {
+                erreur(request, response, "Vous devez être un client ou un conseiller pour pouvoir modifier un compte client.");
                 return;
             }
+            
+            String login = request.getParameter("login");
+            String mdp = request.getParameter("mdp");
+            String nom = request.getParameter("nom");
+            String prenom = request.getParameter("prenom");
+            String adresse = request.getParameter("adresse");
+            String telephone = request.getParameter("telephone");
+            String mail = request.getParameter("mail");
+            
+            clientService.modifierClient(this.session, client, login, mdp, nom, prenom, adresse, telephone, mail);
+            
+            if (this.utilisateur instanceof Conseiller)
+                pageDetailsClient(request, response, client.getIdclient(), (new Integer(client.getIdclient())).toString());
+            else
+                pageAccueil(request, response);
+        } catch (DuplicateEntryException ex) {
+            erreur(request, response, ex.getMessage());
         }
-        else {
-            erreur(request, response, "Vous devez être un client ou un conseiller pour pouvoir modifier un compte client.");
-            return;
-        }
-        
-        String login = request.getParameter("login");
-        String mdp = request.getParameter("mdp");
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
-        String adresse = request.getParameter("adresse");
-        String telephone = request.getParameter("telephone");
-        String mail = request.getParameter("mail");
-        
-        clientService.modifierClient(this.session, client, login, mdp, nom, prenom, adresse, telephone, mail);
-        
-        if (this.utilisateur instanceof Conseiller)
-            pageDetailsClient(request, response, client.getIdclient(), (new Integer(client.getIdclient())).toString());
-        else
-            pageAccueil(request, response);
     }
     // </editor-fold>
 }

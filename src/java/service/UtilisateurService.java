@@ -32,7 +32,7 @@ public class UtilisateurService {
         if (login == null || mdp == null || "".equals(login))
             return null;
         Utilisateur utilisateur = trouverParLogin(session, login);
-        if (utilisateur != null && !mdp.equals(utilisateur.getLogin()))
+        if (utilisateur != null && !mdp.equals(utilisateur.getPwd()))
             throw new BadAuthException("Vous n'avez pas le bon mot de passe.");
         return utilisateur;
     }
