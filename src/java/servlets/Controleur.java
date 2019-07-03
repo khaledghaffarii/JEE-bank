@@ -11,8 +11,6 @@ import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +34,7 @@ public class Controleur extends HttpServlet {
     ClientService clientService;
     CompteService compteService;
     UtilisateurService utilisateurService;
+    OperationService operationService;
     public void init(){
 //        this.bddSession = Hibernate.instance().getSession();
         this.utilisateur = null;
@@ -43,6 +42,7 @@ public class Controleur extends HttpServlet {
         this.clientService = ClientService.instance();
         this.compteService = CompteService.instance();
         this.utilisateurService = UtilisateurService.instance();
+        this.operationService = OperationService.instance();
     }
     public void destroy() {
         this.session.close();
@@ -441,7 +441,7 @@ public class Controleur extends HttpServlet {
 
         // Suppression du compte
         try {
-            compteService.supprimerCompte(this.session, compte);
+            compteService.cloturerCompte(this.session, compte);
         } catch (InvalidParameterException e) {
             erreur(request, response, e.getMessage());
         }
@@ -504,18 +504,15 @@ public class Controleur extends HttpServlet {
         try {
             Double montant = Double.parseDouble(request.getParameter("montant"));
             
-            Operation op = new Operation();
-            op.setDate(new Date());
-            op.setLibelle(libelle);
-            op.setMontant(montant);
-            op.setSource(source);
-            op.setDestinataire(destination);
+            operationService.creerOperation(session, new Date(), libelle, montant,
+            source, destination);
             
-            System.out.println("TODO: Créer une opération.");
             pageDernieresOperations(request, response, iban);
             return;
         } catch (NumberFormatException e) {
             erreur(request, response, "Le montant n'a pas pu être analysé.");
+        } catch (IllegalArgumentException e) {
+            erreur(request, response, e.getMessage());
         }
     }
     private void actionModifierClient(HttpServletRequest request, HttpServletResponse response)

@@ -34,6 +34,13 @@ public class Operation  implements java.io.Serializable, Comparable {
        this.montant = montant;
        this.libelle = libelle;
     }
+    public Operation(Compte source, Compte destinataire, Date date, double montant, String libelle) {
+       this.source = source;
+       this.destinataire = destinataire;
+       this.date = date;
+       this.montant = montant;
+       this.libelle = libelle;
+    }
    
     public int getIdoperation() {
         return this.idoperation;
