@@ -86,6 +86,8 @@ public class CompteService {
         if (compte.getSolde() != 0.)
             throw new InvalidParameterException("Le solde du compte doit être nul.");
         // Le compte n'est pas supprimé, ainsi l'historique des transactions est conservé.
+        for (Client client : compte.getClients())
+            client.getComptes().remove(compte);
         compte.setClients(new HashSet<Client>());
         Transaction transaction = session.beginTransaction();
         try {
