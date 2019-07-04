@@ -12,36 +12,51 @@
     <jsp:useBean id="compte" class="beans.BeanCompte" scope="request" />
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="global.css">
         <title>Dernières opérations</title>
     </head>
     <body>
-        <h1>Crédit Gratuit</h1>
-        <form action="Controleur" method="GET">
-            <input type="hidden" value="Accueil" name="Operation" hidden />
-            <input type="submit" value="Retour" />
-        </form>
-        <c:if test="${compte.clientType == 'Conseiller'}">
-            <c:forEach items="${compte.compte.clients}" var="client">
-            <form action="Controleur" method="GET">
-                <input type="hidden" value="Mon client" name="Operation" hidden />
-                <input type="hidden" value="${client.idclient}" name="ClientId" hidden />
-                <input type="submit" value="Détails du propriétaire ${client.nom} ${client.prenom}" />
-            </form>
-            </c:forEach>
-            <form action="Controleur" method="GET">
-                <input type="hidden" value="Mes clients" name="Operation" hidden />
-                <input type="submit" value="Retour à la liste des clients" />
-        </form>
-        </c:if>
-        <h2>Historique du compte</h2>
-        <div class="compte">
-            <h3>IBAN : ${compte.compte.iban}</h3>
-            <p>Solde : ${compte.compte.solde} €</p>
+        <table width="100%">
+            <tr>
+                <td>
+                    <h1>Dernières opérations</h1>
+                </td>
+                <td></td>
+                <td class="droite">
+                </td>
+            </tr>
+        </table>
+        <h2 class="centrer titre">Informations</h2>
+        <br>
+        <div class="compte cadre">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <h3>IBAN : ${compte.compte.iban}</h3>
+                        <p><b>Solde :</b> ${compte.compte.solde} €</p>
+                    </td>
+                    <td class="centrer">
+                        <c:if test="${compte.clientType == 'Conseiller'}">
+                            <c:forEach items="${compte.compte.clients}" var="client">
+                                <div class="inline wp40 mh3">
+                                    <form action="Controleur" method="GET">
+                                        <input type="hidden" value="Mon client" name="Operation" hidden />
+                                        <input type="hidden" value="${client.idclient}" name="ClientId" hidden />
+                                        <input type="submit" value="Détails de ${client.nom} ${client.prenom}" />
+                                    </form>
+                                </div>
+                            </c:forEach>
+                        </c:if>
+                    </td>
+                </tr>
+            </table>
         </div>
-        <h2>Opérations</h2>
+        <br><br>
+        <h2 class="centrer titre">Opérations</h2>
+        <br>
         <c:forEach items="${compte.operations}" var="operation">
-            <div class="operation">
-                <p>Type : 
+            <div class="operation cadre">
+                <p><b>Type :</b> 
                     <c:choose>
                         <c:when test="${operation.source == null && operation.destinataire != null}">
                             Dépôt
@@ -60,20 +75,26 @@
                         </c:otherwise>
                     </c:choose>
                 </p>
-                <p>Date : ${operation.date}</p>
-                <p>Libellé : ${operation.libelle}</p>
-                <p>Montant : ${operation.montant}</p>
+                <p><b>Date : </b>${operation.date}</p>
+                <p><b>Libellé : </b>${operation.libelle}</p>
+                <p><b>Montant : </b>${operation.montant} €</p>
                 <c:choose>
                     <c:when test="${operation.source != null && operation.destinataire == compte.compte}">
-                        <p>De : ${operation.source.iban}</p>
+                        <p><b>De : </b>${operation.source.iban}</p>
                     </c:when>
                 </c:choose>
                 <c:choose>
                     <c:when test="${operation.source == compte.compte && operation.destinataire != null}">
-                        <p>Vers : ${operation.destinataire.iban}</p>
+                        <p><b>Vers : </b>${operation.destinataire.iban}</p>
                     </c:when>  
                 </c:choose>
             </div>
         </c:forEach>
+        <div class="boutonBasPage">
+            <form action="Controleur" method="GET">
+                <input type="hidden" value="Accueil" name="Operation" hidden />
+                <input type="submit" value="Retour" />
+            </form>
+        </div>
     </body>
 </html>

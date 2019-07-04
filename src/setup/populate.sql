@@ -149,29 +149,37 @@ insert into bank.compte(ibanCompte, solde) values ('FR76 5847 2947 4759 3573 473
 insert into bank.compte(ibanCompte, solde) values ('FR76 5389 2347 1464 2189 3267 235', -3267.76);
 insert into bank.compte(ibanCompte, solde) values ('FR76 5738 4366 6580 3248 7891 663', 8667.62);
 insert into bank.compte(ibanCompte, solde) values ('FR76 1577 7927 4942 3273 4706 249', 797.15);
-
 insert into bank.compte(ibanCompte, solde) values ('FR76 2567 7957 3469 8923 5975 235', 12447.23);
 insert into bank.compte(ibanCompte, solde) values ('FR76 3468 2356 7538 1573 3467 993', 3.42);
 insert into bank.compte(ibanCompte, solde) values ('FR76 1057 7255 9475 2456 1583 586', -967.76);
 insert into bank.compte(ibanCompte, solde) values ('FR76 0164 1648 3957 1422 4795 331', -47.76);
 
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (0, 'FR76 5847 2947 4759 3573 4731 689');
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (0, 'FR76 5389 2347 1464 2189 3267 235');
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (0, 'FR76 5738 4366 6580 3248 7891 663');
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (0, 'FR76 1577 7927 4942 3273 4706 249');
+insert into bank.clientCompte(idClient, ibanCompte) values (0, 'FR76 5847 2947 4759 3573 4731 689');
+insert into bank.clientCompte(idClient, ibanCompte) values (0, 'FR76 5389 2347 1464 2189 3267 235');
+insert into bank.clientCompte(idClient, ibanCompte) values (0, 'FR76 5738 4366 6580 3248 7891 663');
+insert into bank.clientCompte(idClient, ibanCompte) values (0, 'FR76 1577 7927 4942 3273 4706 249');
+insert into bank.clientCompte(idClient, ibanCompte) values (1, 'FR76 2567 7957 3469 8923 5975 235');
+insert into bank.clientCompte(idClient, ibanCompte) values (1, 'FR76 3468 2356 7538 1573 3467 993');
+insert into bank.clientCompte(idClient, ibanCompte) values (1, 'FR76 1057 7255 9475 2456 1583 586');
+insert into bank.clientCompte(idClient, ibanCompte) values (1, 'FR76 0164 1648 3957 1422 4795 331');
 
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (1, 'FR76 2567 7957 3469 8923 5975 235');
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (1, 'FR76 3468 2356 7538 1573 3467 993');
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (1, 'FR76 1057 7255 9475 2456 1583 586');
-insert into bank.clientCompte(idClient, ibanCompte) values
-    (1, 'FR76 0164 1648 3957 1422 4795 331');
+
+insert into bank.compte(ibanCompte, solde) values ('FR76 3000 1007 9412 3456 7890 185', 487.34);
+insert into bank.compte(ibanCompte, solde) values ('FR76 3000 4000 0312 3456 7890 143', 647.23);
+insert into bank.compte(ibanCompte, solde) values ('FR76 3000 6000 0112 3456 7890 189', -602.56);
+insert into bank.compte(ibanCompte, solde) values ('FR76 1010 7001 0112 3456 7890 129', 90435.40);
+insert into bank.compte(ibanCompte, solde) values ('FR76 1131 5000 0112 3456 7890 138', -390.56);
+insert into bank.compte(ibanCompte, solde) values ('FR76 3000 2032 5312 3456 7890 168', 309.57);
+insert into bank.compte(ibanCompte, solde) values ('FR76 3005 6009 2712 3456 7890 182', 14.64);
+insert into bank.compte(ibanCompte, solde) values ('FR76 1180 8009 1012 3456 7890 147', -39.96);
+insert into bank.clientCompte(idClient, ibanCompte) values (22, 'FR76 3000 1007 9412 3456 7890 185');
+insert into bank.clientCompte(idClient, ibanCompte) values (3, 'FR76 3000 4000 0312 3456 7890 143');
+insert into bank.clientCompte(idClient, ibanCompte) values (42, 'FR76 3000 6000 0112 3456 7890 189');
+insert into bank.clientCompte(idClient, ibanCompte) values (38, 'FR76 1010 7001 0112 3456 7890 129');
+insert into bank.clientCompte(idClient, ibanCompte) values (21, 'FR76 1131 5000 0112 3456 7890 138');
+insert into bank.clientCompte(idClient, ibanCompte) values (44, 'FR76 3000 2032 5312 3456 7890 168');
+insert into bank.clientCompte(idClient, ibanCompte) values (12, 'FR76 3005 6009 2712 3456 7890 182');
+insert into bank.clientCompte(idClient, ibanCompte) values (18, 'FR76 1180 8009 1012 3456 7890 147');
 
 
 insert into bank.operation (ibanSource, ibanDestinataire, dateOperation, montant, libelle) values
