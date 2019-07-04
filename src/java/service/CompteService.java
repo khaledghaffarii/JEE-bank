@@ -39,8 +39,12 @@ public class CompteService {
     private static Random ibanGenerator = new Random();
     private String genererIban() {
         StringBuilder sb = new StringBuilder(33);
-        for( int i = 0; i < 33; i++ ) 
-           sb.append(ibanCharacters.charAt(ibanGenerator.nextInt(ibanCharacters.length()) ) );
+        for( int i = 0; i < 33; i++ ) {
+            if (i%4 == 3)
+               sb.append(' ');
+            else
+               sb.append(ibanCharacters.charAt(ibanGenerator.nextInt(ibanCharacters.length()) ) );
+        }
         return sb.toString();
     }
     
