@@ -482,50 +482,50 @@ public class Controleur extends HttpServlet {
     }
     private void actionEnregistrerOperation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String type = request.getParameter("type");
-        String libelle = request.getParameter("libelle");
-        String ibanSource = request.getParameter("source");
-        String ibanDestination = request.getParameter("destination");
-        String iban = request.getParameter("Compte concerne");
-        Compte compte = this.utilisateur instanceof Client ?
-                verifierIbanClient(request, response, iban):
-                verifierIbanConseiller(request, response, iban);
-        Compte source = (ibanSource == null || "".equals(ibanSource)) ?
-                null : compteService.trouverParIban(this.session, ibanSource);
-        Compte destination = (ibanDestination == null || "".equals(ibanDestination)) ?
-                null : compteService.trouverParIban(this.session, ibanDestination);
-        
-        // Vérifications
-        verifierCompteUtilisateur(request, response, compte);
-        if ("Depot".equals(type)) {
-            source = null;
-            destination = compte;
-        }
-        else if ("Retrait".equals(type)) {
-            source = compte;
-            destination = null;
-        }
-        else if ("Virement entrant".equals(type)) {
-            destination = compte;
-            if (source == null) {
-                erreur(request, response, "Un virement entrant doit avoir une source.");
-                return;
-            }
-        }
-        else if ("Virement sortant".equals(type)) {
-            source = compte;
-            if (destination == null) {
-                erreur(request, response, "Un virement sortant doit avoir un destinataire.");
-                return;
-            }
-        }
-        else {
-                erreur(request, response, "Le type de l'opération est inconnu.");
-                return;
-            }
-        
-        // Réalisation de l'opération.
         try {
+            String type = request.getParameter("type");
+            String libelle = request.getParameter("libelle");
+            String ibanSource = request.getParameter("source");
+            String ibanDestination = request.getParameter("destination");
+            String iban = request.getParameter("Compte concerne");
+            Compte compte = this.utilisateur instanceof Client ?
+                    verifierIbanClient(request, response, iban):
+                    verifierIbanConseiller(request, response, iban);
+            Compte source = (ibanSource == null || "".equals(ibanSource)) ?
+                    null : compteService.trouverParIban(this.session, ibanSource);
+            Compte destination = (ibanDestination == null || "".equals(ibanDestination)) ?
+                    null : compteService.trouverParIban(this.session, ibanDestination);
+
+            // Vérifications
+            verifierCompteUtilisateur(request, response, compte);
+            if ("Depot".equals(type)) {
+                source = null;
+                destination = compte;
+            }
+            else if ("Retrait".equals(type)) {
+                source = compte;
+                destination = null;
+            }
+            else if ("Virement entrant".equals(type)) {
+                destination = compte;
+                if (source == null) {
+                    erreur(request, response, "Un virement entrant doit avoir une source.");
+                    return;
+                }
+            }
+            else if ("Virement sortant".equals(type)) {
+                source = compte;
+                if (destination == null) {
+                    erreur(request, response, "Un virement sortant doit avoir un destinataire.");
+                    return;
+                }
+            }
+            else {
+                    erreur(request, response, "Le type de l'opération est inconnu.");
+                    return;
+                }
+
+            // Réalisation de l'opération.
             Double montant = Double.parseDouble(request.getParameter("montant"));
             
             operationService.creerOperation(session, new Date(), libelle, montant,
@@ -535,7 +535,7 @@ public class Controleur extends HttpServlet {
             return;
         } catch (NumberFormatException e) {
             erreur(request, response, "Le montant n'a pas pu être analysé.");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NotFoundException e) {
             erreur(request, response, e.getMessage());
         }
     }
