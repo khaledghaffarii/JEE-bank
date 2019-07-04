@@ -17,6 +17,9 @@
         <property name="libelle" type="string">
             <column name="LIBELLE" length="100" not-null="true" />
         </property>
+        <property name="libelleDestinataireVirement" type="string">
+            <column name="LIBELLEDESTINATAIREVIREMENT" length="100" not-null="false" />
+        </property>
         <many-to-one name="source" entity-name="model.Compte">
             <column name="IBANSOURCE" not-null="false" />
         </many-to-one>

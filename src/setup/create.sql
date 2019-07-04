@@ -59,7 +59,8 @@ create table bank.operation(
     ibanDestinataire 	varchar(50),
     dateOperation      			date          	NOT NULL,
 	montant   			double     	  	NOT NULL,
-	libelle				varchar(100)	NOT NULL
+	libelle				varchar(100)	NOT NULL,
+	libelleDestinataireVirement	varchar(100)
 );
 
 create table bank.clientCompte(
