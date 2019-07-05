@@ -73,7 +73,20 @@
         </div>
         <br><br>
         <div>
+            <h2 class="centrer titre">Mes derniers messages</h2>
+            <c:forEach items="${conseiller.conseiller.clients}" var="client">
+                <c:forEach items="${client.messages}" var="message">
+                    <div class="compte cadre">
+                        <p><b>De :</b> ${client.nom} ${client.prenom}</p>
+                        <p><b>Date : </b>${message.date}</p>
+                        <p><b>Contenu : </b></p>
+                        <div class="compte cadre"><p>${message.contenu}</p></div>
+                    </div>
+                </c:forEach>
+            </c:forEach>
+        <div>
             <h2 class="centrer titre">Mon agence</h2>
+        </div>
             <br>
             <div class="cadre">
                 <table>
