@@ -10,6 +10,7 @@ Licence Pro (BAC+3) web project
 
 Informations complémentaires :
 
+- base jdbc:derby://localhost:1527/bank (utilisateur bank/bank)
 - login client/client pour voir la vue client. D'autres comptes existent, cf. jeu de données.
 - login conseiller/conseiller pour voir la vue conseiller. D'autres comptes existent, cf. jeu de données.
 
