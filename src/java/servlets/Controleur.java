@@ -201,7 +201,7 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("accueilClient.jsp").forward(request,response);
         }
         else if (this.utilisateur instanceof Conseiller) {
-            BeanConseiller beanConseiller = new BeanConseiller((Conseiller) this.utilisateur);
+            BeanConseillerOperations beanConseiller = new BeanConseillerOperations((Conseiller) this.utilisateur);
             request.setAttribute("conseiller", beanConseiller);
             request.getRequestDispatcher("accueilConseiller.jsp").forward(request,response);
         }

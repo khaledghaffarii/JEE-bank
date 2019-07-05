@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-    <jsp:useBean id="conseiller" class="beans.BeanConseiller" scope="request" />
+    <jsp:useBean id="conseiller" class="beans.BeanConseillerOperations" scope="request" />
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="global.css">
@@ -74,15 +74,13 @@
         <br><br>
         <div>
             <h2 class="centrer titre">Mes derniers messages</h2>
-            <c:forEach items="${conseiller.conseiller.clients}" var="client">
-                <c:forEach items="${client.messages}" var="message">
-                    <div class="compte cadre">
-                        <p><b>De :</b> ${client.nom} ${client.prenom}</p>
-                        <p><b>Date : </b>${message.date}</p>
-                        <p><b>Contenu : </b></p>
-                        <div class="compte cadre"><p>${message.contenu}</p></div>
-                    </div>
-                </c:forEach>
+            <c:forEach items="${conseiller.messages}" var="message">
+                <div class="compte cadre">
+                    <p><b>De :</b> ${client.nom} ${client.prenom}</p>
+                    <p><b>Date : </b>${message.date}</p>
+                    <p><b>Contenu : </b></p>
+                    <div class="compte cadre"><p>${message.contenu}</p></div>
+                </div>
             </c:forEach>
         <div>
             <h2 class="centrer titre">Mon agence</h2>
