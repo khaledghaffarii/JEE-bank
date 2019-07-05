@@ -1,7 +1,14 @@
 # JEE-bank
 Licence Pro (BAC+3) web project
 
-## Librables
+## Collaborateurs
+
+- Chenal
+- Faucher
+- Marchand
+- Pochart
+
+## Livrables
 
 - sources: archive envoyée par mail
 - war: `dist/bank.war`

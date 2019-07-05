@@ -40,5 +40,12 @@
             <key column="IDCLIENT"/>
             <many-to-many class="model.Compte" column="IBANCOMPTE" />
         </set>
+        <set name="messages" table="MESSAGE" 
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="IDCLIENT" not-null="false" />
+            </key>
+            <one-to-many class="model.Message" />
+        </set>
     </class>
 </hibernate-mapping>

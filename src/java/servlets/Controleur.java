@@ -42,6 +42,7 @@ public class Controleur extends HttpServlet {
     CompteService compteService;
     UtilisateurService utilisateurService;
     OperationService operationService;
+    MessageService messageService;
     public void init(){
 //        this.bddSession = Hibernate.instance().getSession();
         this.utilisateur = null;
@@ -50,6 +51,7 @@ public class Controleur extends HttpServlet {
         this.compteService = CompteService.instance();
         this.utilisateurService = UtilisateurService.instance();
         this.operationService = OperationService.instance();
+        this.messageService = MessageService.instance();
     }
     public void destroy() {
         this.session.close();
@@ -153,6 +155,9 @@ public class Controleur extends HttpServlet {
             break;
             case "Enregistrer une operation" :
                 actionEnregistrerOperation(request, response);
+            break;
+            case "Envoyer un message" :
+                actionCreerMessage(request, response);
             break;
             default:
                 erreur(request, response, "Opération post inconnue : " + request.getParameter("Operation"));
@@ -442,6 +447,17 @@ public class Controleur extends HttpServlet {
     }// </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Actions. Click on the + sign on the left to edit the code.">
+    private void actionCreerMessage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        verifierClient(request, response);
+        String message = request.getParameter("message");
+        if (message == null || "".equals(message)) {
+            erreur(request, response, "Votre message ne peut pas être vide.");
+            return;
+        }
+        messageService.creerMessage(session, (Client) this.utilisateur, message);
+        pageAccueil(request, response); //TODO Amélioration : créer une page de validation.
+    }
     private void actionCreerClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         verifierConseiller(request, response);

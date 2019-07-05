@@ -16,6 +16,7 @@ public class Client extends Utilisateur {
      private Agence agence;
      private Conseiller conseiller;
      private Set<Compte> comptes;
+     private Set<Message> messages;
 
     public Client() {
     }
@@ -57,6 +58,12 @@ public class Client extends Utilisateur {
     }
     public void setComptes(Set<Compte> comptes) {
         this.comptes = comptes;
+    }
+    public Set<Message> getMessages() {
+        return messages;
+    }
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
     
     @Override
