@@ -23,7 +23,9 @@ A titre d'exemple, ce genre d'applicaiton requiert une interface d'administratio
 
 Beaucoup de fonctionnalités ne sont donc pas exhaustives dans la présente version de l'application pour la rendre conforme à la RGPD. La plus notable est la gestion des utilisateurs. Si les clients peuvent être créés par les conseillers, et leurs informations être modifiées par eux-mêmes ou par leur conseiller, jamais les clients ne peuvent être supprimés à proprement parler. En ce qui concerne les conseillers, c'est pire : ils ne peuvent ni être créés, ni modifiés, ni supprimés via l'UI. De même pour les agences. Cette absence est en partie liée à l'absence du périmètre d'une interface d'administration, et de comptes administrateurs dotés de tous les pouvoirs.
 
-Une dernière chose vitale n'a pas pu être implémentée dans les temps : le cryptage des mots de passe dans la base de données. Nous sommes conscients de ce besoin. Un cryptage MD5 est largement insuffisant pour des données aussi sensibles, aussi avons-nous préféré investir des ressources sur d'autres éléments du site.
+Une dernière chose vitale a pu être implémentée dans les temps : le cryptage des mots de passe dans la base de données. Un hashage MD5 est largement insuffisant pour des données aussi sensibles, aussi notre implémentation de la sécurité n'est-elle à prendre que comme un aperçu, une démo de ce que nous pouvons faire.
+
+Il en va de même pour le design, qui est la vitrine de notre projet auprès du client et de ses utilisateurs (en l'occurence, ses clients). Nous avons mis notre meilleur artiste sur le sujet.
 
 ### Justification des choix fonctionnels réalisés
 

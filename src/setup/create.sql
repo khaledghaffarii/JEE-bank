@@ -13,7 +13,7 @@ create table bank.client(
         GENERATED ALWAYS AS IDENTITY
         (START WITH 0, INCREMENT BY 1),
 	login     		varchar(20)     UNIQUE			NOT NULL,
-    pwd       		varchar(30)     NOT NULL,
+    pwd       		varchar(32)     NOT NULL,
 	nom       		varchar(30)     NOT NULL,
 	prenom    		varchar(30)     NOT NULL,
 	adresse      	varchar(300)    NOT NULL,
@@ -28,7 +28,7 @@ create table bank.conseiller(
         GENERATED ALWAYS AS IDENTITY
         (START WITH 0, INCREMENT BY 1),
 	login     		varchar(20)     UNIQUE			NOT NULL,
-    pwd       		varchar(30)     NOT NULL,
+    pwd       		varchar(32)     NOT NULL,
 	nom       		varchar(30)     NOT NULL,
 	prenom    		varchar(30)     NOT NULL,
 	adresse      	varchar(300)    NOT NULL,
