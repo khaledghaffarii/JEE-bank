@@ -14,6 +14,7 @@ Licence Pro (BAC+3) web project
 - war: `dist/bank.war`
 - jeu de donneés: `src/setup`, fichiers **create.sql** et **populate.sql**
 - rapport de projet : présent document
+- 
 
 Informations complémentaires :
 
@@ -49,6 +50,7 @@ Techniquement parlant, le point le plus notable de la modélisation est la table
 - dépôt (le compte est destinataire de l'opération, la source non renseignée)
 - retrait (le compte est source de l'opération, le destinataire non renseigné)
 - virements entrants et sortants
+Nous avons aussi modélisés les cas d'utilisations de l'application (cf. Cas d'utilisation).
 Ce choix simplifie le stockage, mais augmente le nombre de traitements applicatifs. Son principal avantage est de relier un même traitement à deux comptes à la fois : nous évitons ainsi de dupliquer un même objet. Toutefois, il existe une limitation inhérente à cette décision. Un virement entrant ou sortant ne peut être relié qu'à un compte existant dans le système.
 
 L'ensemble des relations entre les pojos est à double sens, de sorte qu'il me suffit, par exemple, d'avoir trouvé le compte d'un client pour connaître le nom du client, et celui de son conseiller. Inversemment, le POJO conseiller me donne accès à l'ensemble des comptes dont il a la charge, à travers les clients dont il est responsable.
