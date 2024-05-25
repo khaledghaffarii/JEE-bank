@@ -8,7 +8,7 @@
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
 <project name="JEE-bank" default="default" basedir=".">
-    <description>Licence Pro (BAC+3) web project.</description>
+    <description>web project.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

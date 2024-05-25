@@ -1,5 +1,6 @@
 # JEE-bank
-Licence Pro (BAC+3) web project
+
+web project
 
 ## Collaborateurs
 
@@ -14,7 +15,7 @@ Licence Pro (BAC+3) web project
 - war: `dist/bank.war`
 - jeu de donneés: `src/setup`, fichiers **create.sql** et **populate.sql**
 - rapport de projet : présent document
-- 
+-
 
 Informations complémentaires :
 
@@ -47,11 +48,12 @@ Les droits réservés aux conseillers nous paraissent sensés. Si un client peut
 #### Modélisation et hibernate.
 
 Techniquement parlant, le point le plus notable de la modélisation est la table Operation (cf. figure 1). Cette table unique regroupe les quatre types d'opération possible sur un compte :
+
 - dépôt (le compte est destinataire de l'opération, la source non renseignée)
 - retrait (le compte est source de l'opération, le destinataire non renseigné)
 - virements entrants et sortants
-Nous avons aussi modélisés les cas d'utilisations de l'application (cf. Cas d'utilisation).
-Ce choix simplifie le stockage, mais augmente le nombre de traitements applicatifs. Son principal avantage est de relier un même traitement à deux comptes à la fois : nous évitons ainsi de dupliquer un même objet. Toutefois, il existe une limitation inhérente à cette décision. Un virement entrant ou sortant ne peut être relié qu'à un compte existant dans le système.
+  Nous avons aussi modélisés les cas d'utilisations de l'application (cf. Cas d'utilisation).
+  Ce choix simplifie le stockage, mais augmente le nombre de traitements applicatifs. Son principal avantage est de relier un même traitement à deux comptes à la fois : nous évitons ainsi de dupliquer un même objet. Toutefois, il existe une limitation inhérente à cette décision. Un virement entrant ou sortant ne peut être relié qu'à un compte existant dans le système.
 
 L'ensemble des relations entre les pojos est à double sens, de sorte qu'il me suffit, par exemple, d'avoir trouvé le compte d'un client pour connaître le nom du client, et celui de son conseiller. Inversemment, le POJO conseiller me donne accès à l'ensemble des comptes dont il a la charge, à travers les clients dont il est responsable.
 
@@ -62,12 +64,14 @@ En raison de la faible taille de notre jeu de données, nous avons opté pour la
 Malgré l'absence de sécurisation des mots de passe, nous avions à coeur de créer une application sécurisée. Chaque page, chaque opération ne sont réalisées que si le client est authentifié, et la cible de son opération ou de la vue qu'il demande n'est accordée que si le compte ou la page client concernée sont bel et bien les siens. Autrement dit, toute fonction correspondant à une route intègre un lot important de vérifications standardisées.
 
 Pour ce qui est du contrôleur, MVC2 requiert un contrôleur unique. Néanmoins, des classes dédiées aux interactions avec la base de données (appelées "services") aident à désengorger ce contrôleur, lui laissant les logiques de routage. Le travail spécifique du contrôleur est donc le routage. Le routage s'opère à partir des deux fonctions de base d'une HttpServlet : doGet et doPost. Ces fonctions redistribuent ensuite leur travail vers d'autres fonctions, qui sont de trois type :
+
 1. des fonctions opérant des vérifications, qui garantissent la sécurité du logiciel
 2. des fonctions opérant des redirections vers une page, en fournissant à la page en question les informations nécessaires encapsulées dans des javabeans
 3. des fonctions opérant des actions
-Chacun de ces types de fonction appelant les précédentes, il paraissait malvenu de segmenter davantage le routage sous forme de contrôleurs.
+   Chacun de ces types de fonction appelant les précédentes, il paraissait malvenu de segmenter davantage le routage sous forme de contrôleurs.
 
 Comme chaque instance du contrôleur correspond à une connection, le contrôleur est l'endroit parfait pour stocker les deux informations suivantes :
+
 - le compte de l'utilisateur connecté, qui permet de vérifier les droits d'accès aux différentes pages et opérations
 - la session de connection à la base de données, qui a vocation à être propre à l'utilisateur, et détruite à la fin de la session applicative.
 
